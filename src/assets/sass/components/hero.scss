@@ -1,0 +1,21 @@
+.hero {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 3em;
+  .copy {
+    width: 40%;
+    font-size: 1.3rem;
+  }
+  .img {
+    width: 80%;
+    height: auto;
+    max-width: 550px;
+  }
+  .cta {
+    margin-top: 2em;
+  }
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+}
