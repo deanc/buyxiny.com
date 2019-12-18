@@ -1,3 +1,5 @@
+@import "_variables";
+
 @font-face {
   font-family: Proxima Nova;
   src: url(../font/proxima-nova/proxima-nova-regular.woff2) format("woff2")
@@ -13,10 +15,6 @@
   font-weight: 700;
 }
 
-svg {
-  max-width: 200px;
-}
-
 * {
   box-sizing: border-box;
 }
@@ -24,11 +22,8 @@ svg {
 @import "spinner";
 
 @import "components/country-list";
+@import "components/item-list";
 @import "components/hero";
-
-html {
-  --brown: #716040;
-}
 
 body {
   margin: 0;
@@ -36,7 +31,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: #f9f4ef;
-  color: var(brown);
+  color: $brown;
   font-size: 18px;
   line-height: 1.8;
 }
@@ -121,7 +116,7 @@ nav .logo {
   }
 }
 nav .logo .hl {
-  color: var(--brown);
+  color: $brown;
 }
 nav .logo img {
   width: 30px;

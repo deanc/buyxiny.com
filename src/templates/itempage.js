@@ -1,20 +1,20 @@
 import React from "react"
 import Layout from "../components/Layout"
 import SEO from "../components/SEO"
-import ItemList from "../components/ItemList"
 import PropTypes from "prop-types"
+import ItemView from "../components/ItemView"
 
-const CountryPage = ({ pageContext: { slug } }) => {
+const ItemPage = ({ pageContext: { slug } }) => {
   return (
     <Layout>
-      <SEO title="Country List" />
-      <ItemList country={slug} />
+      <SEO title="Item view" />
+      <ItemView slug={slug} />
     </Layout>
   )
 }
 
-CountryPage.propTypes = {
+ItemPage.propTypes = {
   pageContext: PropTypes.object,
 }
 
-export default CountryPage
+export default ItemPage

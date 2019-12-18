@@ -1,0 +1,10 @@
+.item-list {
+  .item-list-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5em;
+    &.inverse {
+      background: lighten($lightBrown, 2%);
+    }
+  }
+}
