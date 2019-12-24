@@ -1,4 +1,6 @@
 const path = require(`path`)
+const config = require("./src/config/general.json")
+const _ = require("lodash")
 
 exports.createPages = async ({ graphql, actions, reporter }) => {
   const { createPage } = actions
@@ -15,6 +17,20 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
             }
           }
         }
+        allItem {
+          edges {
+            node {
+              id
+              slug
+              name
+              type
+              locations {
+                id
+                name
+              }
+            }
+          }
+        }
       }
     `
   )
@@ -23,19 +39,62 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
     reporter.panicOnBuild(`Error while running GraphQL query.`)
     return
   }
-  // Create pages for each markdown file.
+
+  // get all unique types
+  const types = _.uniq(result.data.allItem.edges.map(({ node }) => node.type))
+
+  // Create pages for each country
   const countryTemplate = path.resolve(`./src/templates/countrypage.js`)
   result.data.allCountry.edges.forEach(({ node }) => {
     const slug = node.slug
-    const realPath = "q/" + slug
-    createPage({
-      path: realPath,
-      component: countryTemplate,
-      // In your blog post template's graphql query, you can use path
-      // as a GraphQL variable to query for data from the markdown file.
-      context: {
-        // path,
-      },
+    if (config.validCountries.includes(slug)) {
+      // create root page
+      const realPath = "q/" + slug
+      createPage({
+        path: realPath,
+        component: countryTemplate,
+        context: {
+          // path,
+          country: node.slug,
+        },
+      })
+
+      // create type page
+      types.forEach(type => {
+        // TODO: fix pluralization being hardcoded (again)
+        createPage({
+          path: realPath + "/" + type + "s",
+          component: countryTemplate,
+          context: {
+            // path,
+            country: node.slug,
+            type,
+          },
+        })
+      })
+    }
+  })
+
+  // create pages for the item types for each country
+
+  // Create pages for each item
+  const itemTemplate = path.resolve(`./src/templates/itempage.js`)
+  result.data.allItem.edges.forEach(({ node }) => {
+    const slug = node.slug
+
+    config.validCountries.forEach(country => {
+      const realPath = "q/where-to-buy-" + slug + "-in-" + country
+      createPage({
+        path: realPath,
+        component: itemTemplate,
+        context: {
+          // path,
+          id: node.id,
+          name: node.name,
+          slug,
+          country,
+        },
+      })
     })
   })
 }

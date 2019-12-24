@@ -1,0 +1,7 @@
+.item-location {
+  border-top: 1px solid lighten($brown, 50%);
+
+  &:last-child {
+    border-bottom: 1px solid lighten($brown, 50%);
+  }
+}

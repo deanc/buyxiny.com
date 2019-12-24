@@ -19,7 +19,7 @@ const ItemListItem = ({ item, alt, country }) => {
   return (
     <Link className={itemClasses} to={url}>
       <span className="title">{item.name}</span>
-      <span className="location-count">{locationCount}</span>
+      <span className="location-count">{locationCount} locations</span>
     </Link>
   )
 }

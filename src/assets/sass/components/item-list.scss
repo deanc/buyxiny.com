@@ -6,5 +6,17 @@
     &.inverse {
       background: lighten($lightBrown, 2%);
     }
+
+    &:hover {
+      //background: lighten($lightBrown, 2%);
+      // &.inverse {
+      background: darken($lightBrown, 2%);
+      // }
+    }
+  }
+
+  a {
+    color: #000;
+    text-decoration: none;
   }
 }

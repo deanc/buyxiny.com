@@ -14,22 +14,40 @@ module.exports = {
       },
     },
     {
-      resolve: `gatsby-source-firestore`,
+      resolve: `gatsby-firesource`,
       options: {
         // credential or appConfig
         credential: require(`./src/config/firebase.credentials.json`),
         types: [
           {
+            type: `Item`,
+            collection: `items`,
+            map: doc => ({
+              ...doc,
+              locations___NODE: doc.locations
+                ? doc.locations.map(location => location.id)
+                : [],
+            }),
+          },
+          {
             type: `Country`,
             collection: `countries`,
             map: doc => ({
-              name: doc.name,
-              slug: doc.slug,
+              ...doc,
+            }),
+          },
+          {
+            type: `Location`,
+            collection: `locations`,
+            map: doc => ({
+              ...doc,
+              country___NODE: doc.country ? doc.country.id : null,
             }),
           },
         ],
       },
     },
+    `gatsby-plugin-layout`,
     `gatsby-plugin-sass`,
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,

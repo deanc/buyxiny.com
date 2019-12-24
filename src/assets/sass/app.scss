@@ -21,9 +21,13 @@
 
 @import "spinner";
 
+@import "components/breadcrumb";
 @import "components/country-list";
 @import "components/item-list";
 @import "components/hero";
+@import "components/item-location";
+@import "components/navigation-search";
+@import "components/tab-list";
 
 body {
   margin: 0;
@@ -49,10 +53,17 @@ h6 {
 h1 {
   font-size: 3rem;
   line-height: 1.15;
+  .hl {
+    color: $brown;
+  }
 }
 h2 {
   font-size: 2rem;
   line-height: 30px;
+}
+
+a {
+  color: $red;
 }
 
 .container {

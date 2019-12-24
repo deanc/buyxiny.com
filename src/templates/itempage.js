@@ -1,15 +1,30 @@
 import React from "react"
-import Layout from "../components/Layout"
 import SEO from "../components/SEO"
 import PropTypes from "prop-types"
 import ItemView from "../components/ItemView"
+import Breadcrumb from "../components/Breadcrumb"
+import { capitalize } from "lodash"
 
-const ItemPage = ({ pageContext: { slug } }) => {
+const ItemPage = ({ pageContext: { id, slug, country, name } }) => {
   return (
-    <Layout>
+    <>
       <SEO title="Item view" />
-      <ItemView slug={slug} />
-    </Layout>
+      <div className="container">
+        <Breadcrumb
+          country={country}
+          crumbs={[
+            {
+              label: capitalize(country),
+              linkTo: "/q/" + country,
+            },
+            {
+              label: name,
+            },
+          ]}
+        />
+      </div>
+      <ItemView id={id} name={name} slug={slug} country={country} />
+    </>
   )
 }
 

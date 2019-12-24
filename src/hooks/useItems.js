@@ -1,32 +1,42 @@
 import React, { useEffect } from "react"
 import firebase from "../store/firebase"
 
-const useItems = () => {
+const useItems = type => {
   const [error, setError] = React.useState(false)
   const [loading, setLoading] = React.useState(true)
   const [items, setItems] = React.useState([])
 
+  const handleSnapshot = snapshot => {
+    setLoading(false)
+    const items = []
+    snapshot.forEach(doc => {
+      items.push({ ...doc.data(), id: doc.id })
+    })
+    setItems(items)
+  }
+
+  const handleError = err => {
+    console.log(err)
+    setError(err)
+  }
+
   useEffect(() => {
-    const unsubscribe = firebase
-      .firestore()
-      .collection("items")
-      .onSnapshot(
-        snapshot => {
-          setLoading(false)
-          const items = []
-          snapshot.forEach(doc => {
-            items.push({ ...doc.data(), id: doc.id })
-          })
-          setItems(items)
-        },
-        err => {
-          console.log(err)
-          setError(err)
-        }
-      )
+    let unsubscribe = () => {}
+    if (type) {
+      unsubscribe = firebase
+        .firestore()
+        .collection("items")
+        .where("type", "==", type)
+        .onSnapshot(handleSnapshot, handleError)
+    } else {
+      unsubscribe = firebase
+        .firestore()
+        .collection("items")
+        .onSnapshot(handleSnapshot, handleError)
+    }
 
     return () => unsubscribe()
-  }, [])
+  }, [type])
 
   return {
     error,

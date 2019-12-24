@@ -3,30 +3,34 @@ import PropTypes from "prop-types"
 import useItems from "../hooks/useItems"
 import { BulletList } from "react-content-loader"
 import ItemListItem from "./ItemListItem"
+import ItemTypeList from "./ItemTypeList"
 
-const ItemList = ({ country }) => {
-  const { items, loading } = useItems()
-  let loadingRender = null
-  if (loading) {
-    loadingRender = <BulletList width={550} />
+const ItemList = ({ country, type }) => {
+  const { items, loading } = useItems(type)
+  console.log(items)
+
+  const filteredItems = items.filter(
+    item => item.locations && item.locations.length
+  )
+
+  let itemsRender = <BulletList width={550} />
+  if (!loading) {
+    itemsRender =
+      filteredItems &&
+      filteredItems.map((item, i) => (
+        <ItemListItem
+          key={item.id}
+          country={country}
+          item={item}
+          alt={i % 2 === 0}
+        />
+      ))
   }
-
-  const itemsRender =
-    items &&
-    items.map((item, i) => (
-      <ItemListItem
-        key={item.id}
-        country={country}
-        item={item}
-        alt={i % 2 === 0}
-      />
-    ))
 
   return (
     <div className="item-list">
       <div className="container">
-        <h2>Items</h2>
-        {loadingRender}
+        <ItemTypeList country={country} currentType={type} />
         {itemsRender}
       </div>
     </div>
