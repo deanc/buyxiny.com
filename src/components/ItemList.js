@@ -7,7 +7,6 @@ import ItemTypeList from "./ItemTypeList"
 
 const ItemList = ({ country, type }) => {
   const { items, loading } = useItems(type)
-  console.log(items)
 
   const filteredItems = items.filter(
     item => item.locations && item.locations.length
