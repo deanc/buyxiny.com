@@ -9,15 +9,15 @@ const Breadcrumb = ({ crumbs }) => {
         <li>
           <Link to={"/"}>Home</Link>
         </li>
-        {crumbs.map(crumb => {
+        {crumbs.map((crumb, i) => {
           if (crumb.linkTo && crumb.linkTo.length) {
             return (
-              <li>
+              <li key={i}>
                 <Link to={crumb.linkTo}>{crumb.label}</Link>
               </li>
             )
           }
-          return <li>{crumb.label}</li>
+          return <li key={i}>{crumb.label}</li>
         })}
       </ul>
     </div>
