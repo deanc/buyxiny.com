@@ -1,0 +1,19 @@
+$browser-context: 18; // Default
+
+@function em($pixels, $context: $browser-context) {
+  @return #{$pixels/$context}em;
+}
+
+@function rem($size) {
+  $remSize: $size / 18px;
+  //Default font size on html element is 100%, equivalent to 16px;
+  @return #{$remSize}rem;
+}
+
+@function strip-unit($number) {
+  @if type-of($number) == "number" and not unitless($number) {
+    @return $number / ($number * 0 + 1);
+  }
+
+  @return $number;
+}

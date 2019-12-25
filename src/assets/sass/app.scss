@@ -1,4 +1,5 @@
 @import "_variables";
+@import "_mixins";
 
 @font-face {
   font-family: Proxima Nova;
@@ -36,8 +37,15 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background: #f9f4ef;
   color: $brown;
-  font-size: 18px;
+  font-size: $baseFontSize;
   line-height: 1.8;
+
+  @media (max-width: 1024px) {
+    font-size: $baseFontSize - 2px;
+  }
+  @media (max-width: $bp-tablet) {
+    font-size: $baseFontSize - 3px;
+  }
 }
 
 h1,
@@ -51,7 +59,7 @@ h6 {
 }
 
 h1 {
-  font-size: 3rem;
+  font-size: em(48);
   line-height: 1.15;
   .hl {
     color: $brown;

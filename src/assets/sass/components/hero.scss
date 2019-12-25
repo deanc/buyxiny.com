@@ -2,9 +2,17 @@
   display: flex;
   justify-content: space-between;
   margin-bottom: 3em;
+
+  h1 {
+    font-size: em(48);
+    line-height: 1.15;
+  }
+
   .copy {
     width: 40%;
-    font-size: 1.3rem;
+    p {
+      font-size: em(21);
+    }
   }
   .img {
     width: 80%;
@@ -17,5 +25,32 @@
   img {
     max-width: 100%;
     height: auto;
+  }
+
+  @media (max-width: 1024px) {
+    .copy {
+      width: 55%;
+    }
+    .img {
+      width: 45%;
+    }
+  }
+
+  @media (max-width: $bp-tablet) {
+    flex-flow: row wrap;
+    text-align: center;
+    .copy,
+    .img {
+      width: 100%;
+    }
+    .copy {
+      order: 2;
+    }
+    .img {
+      order: 1;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
   }
 }

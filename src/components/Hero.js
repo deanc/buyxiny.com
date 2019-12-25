@@ -1,9 +1,9 @@
-import React from "react";
-// import PropTypes from "prop-types";
+import React from "react"
 
-// <a href="https://www.freepik.com/free-photos-vectors/background">Background vector created by macrovector - www.freepik.com</a>
+// <a href="https://www.freevector.com/grocery-shopping-29573">FreeVector.com</a>
+import heroImage from "../assets/img/shopping.svg"
 
-const Hero = props => {
+const Hero = () => {
   return (
     <div className="hero">
       <div className="copy">
@@ -22,15 +22,10 @@ const Hero = props => {
         </p>
       </div>
       <div className="img">
-        <img
-          src="https://image.freepik.com/free-vector/shopping-supermarket-cart-with-grocery-pictogram_1284-11697.jpg"
-          alt=""
-        />
+        <img src={heroImage} alt="" />
       </div>
     </div>
-  );
-};
+  )
+}
 
-Hero.propTypes = {};
-
-export default Hero;
+export default Hero
