@@ -1,19 +1,16 @@
-import React from "react";
-import PropTypes from "prop-types";
-import crypto from "crypto";
+import React from "react"
+import PropTypes from "prop-types"
+import md5 from "md5"
 
-import classNames from "classnames";
+import classNames from "classnames"
 
 const Gravatar = ({ email, size, active }) => {
-  const hash = crypto
-    .createHash("md5")
-    .update(email)
-    .digest("hex");
+  const hash = md5(email)
 
   const gravatarClasses = classNames({
     gravatar: true,
-    active: active
-  });
+    active: active,
+  })
 
   return (
     <img
@@ -21,13 +18,13 @@ const Gravatar = ({ email, size, active }) => {
       src={"https://www.gravatar.com/avatar/" + hash + "?s=" + size}
       alt=""
     />
-  );
-};
+  )
+}
 
 Gravatar.propTypes = {
   email: PropTypes.string,
   size: PropTypes.number,
-  active: PropTypes.bool
-};
+  active: PropTypes.bool,
+}
 
-export default Gravatar;
+export default Gravatar
