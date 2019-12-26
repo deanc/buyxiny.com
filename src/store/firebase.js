@@ -4,6 +4,7 @@
 // find out why *THIS* does work:
 import firebase from "firebase/app"
 import "firebase/firestore"
+import "firebase/auth"
 import firebaseConfig from "../config/firebase"
 
 // Add your Firebase credentials

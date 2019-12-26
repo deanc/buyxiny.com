@@ -3,7 +3,6 @@
 */
 import React, { useState, useEffect, useContext, createContext } from "react"
 import firebase from "../store/firebase"
-import "firebase/auth"
 
 const AuthContext = createContext()
 
