@@ -1,5 +1,5 @@
 {
-  "name": "gatsby-starter-default",
+  "name": "buyxiny.com",
   "private": true,
   "description": "A simple starter to get up and developing quickly with Gatsby",
   "version": "0.1.0",
@@ -9,7 +9,7 @@
     "classnames": "^2.2.6",
     "firebase": "^7.6.0",
     "gatsby": "^2.18.8",
-    "gatsby-firesource": "^2.0.3",
+    "gatsby-firesource": "https://github.com/deanc/gatsby-source-firestore#test",
     "gatsby-image": "^2.2.34",
     "gatsby-plugin-layout": "^1.1.18",
     "gatsby-plugin-manifest": "^2.2.31",
