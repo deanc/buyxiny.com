@@ -1,4 +1,5 @@
 import React from "react"
+import { Link } from "gatsby"
 
 // <a href="https://www.freevector.com/grocery-shopping-29573">FreeVector.com</a>
 import heroImage from "../assets/img/shopping.svg"
@@ -16,9 +17,9 @@ const Hero = () => {
           <span className="hl">Finland</span>".
         </p>
         <p className="cta">
-          <a className="btn big" href="#countries">
-            Start shopping
-          </a>
+          <Link className="btn big" to="/q/finland">
+            Start shopping in Finland
+          </Link>
         </p>
       </div>
       <div className="img">
