@@ -1,4 +1,4 @@
-let firebaseConfig = require(`./src/config/firebase.json`)
+let firebaseConfig = {}
 if (process.env.FIREBASE_API_KEY) {
   firebaseConfig = {
     ...require(`./src/config/firebase.default.json`),
@@ -11,6 +11,8 @@ if (process.env.FIREBASE_API_KEY) {
     appId: process.env.FIREBASE_APP_ID,
     measurementId: process.env.FIREBASE_MEASUREMENT_ID,
   }
+} else {
+  firebaseConfig = require(`./src/config/firebase.json`)
 }
 
 module.exports = {
