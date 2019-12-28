@@ -14,10 +14,10 @@ module.exports = {
       },
     },
     {
-      resolve: `gatsby-firesource`,
+      resolve: `@deanc/gatsby-source-firestorer`,
       options: {
         // credential or appConfig
-        credential: require(`./src/config/firebase.credentials.json`),
+        config: require(`./src/config/firebase.json`),
         types: [
           {
             type: `Item`,
