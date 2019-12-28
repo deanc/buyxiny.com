@@ -69,4 +69,5 @@ yarn-error.log
 .yarn-integrity
 
 # app config
-src/config/*.json
+src/config/firebase.json
+src/config/firebase.credentials.json

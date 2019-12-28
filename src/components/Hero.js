@@ -20,6 +20,9 @@ const Hero = () => {
           <Link className="btn big" to="/q/finland">
             Start shopping in Finland
           </Link>
+          <span className="disclaimer">
+            (More countries coming, maybe, one day)
+          </span>
         </p>
       </div>
       <div className="img">

@@ -6,6 +6,7 @@ import { ProvideAuth } from "../hooks/useAuth"
 
 import Header from "../components/Header"
 import "../assets/sass/app.scss"
+import Footer from "../components/Footer"
 
 const Layout = ({ children }) => {
   //   const data = useStaticQuery(graphql`
@@ -22,6 +23,7 @@ const Layout = ({ children }) => {
     <ProvideAuth>
       <Header /*siteTitle={data.site.siteMetadata.title}*/ />
       <main>{children}</main>
+      <Footer />
     </ProvideAuth>
   )
 }
