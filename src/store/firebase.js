@@ -5,7 +5,8 @@
 import firebase from "firebase/app"
 import "firebase/firestore"
 import "firebase/auth"
-import firebaseConfig from "../config/firebase"
+
+import firebaseConfig from "../config/firebase.env"
 
 // Add your Firebase credentials
 firebase.initializeApp(firebaseConfig)
