@@ -1,5 +1,7 @@
+const defaultConfig = require("./firebase.default.json")
+
 const firebaseConfig = {
-  ...require(`./firebase.default.json`),
+  //...defaultConfig,
   apiKey: process.env.FIREBASE_API_KEY,
   authDomain: process.env.FIREBASE_AUTH_DOMAIN,
   databaseURL: process.env.FIREBASE_DATABASE_URL,
