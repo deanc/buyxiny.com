@@ -15,9 +15,10 @@ const ItemView = ({ id, name, slug, country }) => {
 
   let locations = []
   if (item.locations) {
-    item.locations.forEach(location => {
+    item.locations.forEach((location, i) => {
       locations.push(
         <ItemLocation
+          key={i}
           name={location.name}
           url={location.url}
           address={location.address}
