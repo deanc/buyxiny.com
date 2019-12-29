@@ -71,3 +71,6 @@ yarn-error.log
 # app config
 src/config/firebase.json
 src/config/firebase.credentials.json
+
+# hide misc dir
+misc/
