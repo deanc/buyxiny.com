@@ -1,7 +1,4 @@
-const defaultConfig = require("./firebase.default.json")
-
 const firebaseConfig = {
-  //...defaultConfig,
   apiKey: process.env.GATSBY_FIREBASE_API_KEY,
   authDomain: process.env.GATSBY_FIREBASE_AUTH_DOMAIN,
   databaseURL: process.env.GATSBY_FIREBASE_DATABASE_URL,
@@ -11,7 +8,5 @@ const firebaseConfig = {
   appId: process.env.GATSBY_FIREBASE_APP_ID,
   measurementId: process.env.GATSBY_FIREBASE_MEASUREMENT_ID,
 }
-
-console.log(firebaseConfig)
 
 module.exports = firebaseConfig
