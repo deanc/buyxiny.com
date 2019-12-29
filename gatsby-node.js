@@ -44,7 +44,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   const types = _.uniq(result.data.allItem.edges.map(({ node }) => node.type))
 
   // Create pages for each country
-  const countryTemplate = path.resolve(`./src/templates/countrypage.js`)
+  const countryTemplate = path.resolve(`./src/templates/CountryPage.js`)
   result.data.allCountry.edges.forEach(({ node }) => {
     const slug = node.slug
     if (config.validCountries.includes(slug)) {
@@ -78,7 +78,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   // create pages for the item types for each country
 
   // Create pages for each item
-  const itemTemplate = path.resolve(`./src/templates/itempage.js`)
+  const itemTemplate = path.resolve(`./src/templates/ItemPage.js`)
   result.data.allItem.edges.forEach(({ node }) => {
     const slug = node.slug
 
