@@ -5,6 +5,7 @@ import PropTypes from "prop-types"
 import classNames from "classnames"
 
 import Gravatar from "./Gravatar"
+import RoleShield from "./RoleShield"
 
 const NavigationProfileMenu = ({ user, userClaims, onLogout, active }) => {
   const menuClasses = classNames({
@@ -15,6 +16,10 @@ const NavigationProfileMenu = ({ user, userClaims, onLogout, active }) => {
   const isAdmin =
     user && userClaims && userClaims.roles && userClaims.roles.includes("admin")
 
+  const shield = userClaims && userClaims.roles && (
+    <RoleShield roles={userClaims.roles} />
+  )
+
   const displayName = isAdmin ? user.displayName + " (Admin)" : user.displayName
 
   return (
@@ -22,7 +27,7 @@ const NavigationProfileMenu = ({ user, userClaims, onLogout, active }) => {
       <div className="user-info">
         <Gravatar email={user.email} size={80} />
         <p>
-          <strong>{displayName}</strong>
+          <strong>{displayName}</strong> {shield}
           <br />
           {user.email}
         </p>
