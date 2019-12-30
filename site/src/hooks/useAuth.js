@@ -22,6 +22,7 @@ export const useAuth = () => {
 // Provider hook that creates auth object and handles state
 function useProvideAuth() {
   const [user, setUser] = useState(null)
+  const [userClaims, setUserClaims] = useState(null)
   const [initialized, setInitialized] = useState(false)
 
   // Wrap any Firebase methods we want to use making sure ...
@@ -77,6 +78,19 @@ function useProvideAuth() {
       })
   }
 
+  const getClaims = () => {
+    firebase
+      .auth()
+      .currentUser.getIdTokenResult()
+      .then(idTokenResult => {
+        setUserClaims(idTokenResult.claims)
+      })
+      .catch(e => {
+        console.log(e)
+        setUserClaims(null)
+      })
+  }
+
   // Subscribe to user on mount
   // Because this sets state in the callback it will cause any ...
   // ... component that utilizes this hook to re-render with the ...
@@ -85,6 +99,7 @@ function useProvideAuth() {
     const unsubscribe = firebase.auth().onAuthStateChanged(user => {
       if (user) {
         setUser(user)
+        getClaims()
       } else {
         setUser(false)
       }
@@ -99,6 +114,7 @@ function useProvideAuth() {
   return {
     initialized,
     user,
+    userClaims,
     signIn,
     signInWithGoogle,
     signUp,

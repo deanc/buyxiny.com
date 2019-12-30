@@ -1,23 +1,28 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from "react"
+import PropTypes from "prop-types"
 
 // general
-import classNames from "classnames";
+import classNames from "classnames"
 
-import Gravatar from "./Gravatar";
+import Gravatar from "./Gravatar"
 
-const NavigationProfileMenu = ({ user, onLogout, active }) => {
+const NavigationProfileMenu = ({ user, userClaims, onLogout, active }) => {
   const menuClasses = classNames({
     "navigation-profile-menu": true,
-    active: active
-  });
+    active: active,
+  })
+
+  const isAdmin =
+    user && userClaims && userClaims.roles && userClaims.roles.includes("admin")
+
+  const displayName = isAdmin ? user.displayName + " (Admin)" : user.displayName
 
   return (
     <div className={menuClasses}>
       <div className="user-info">
         <Gravatar email={user.email} size={80} />
         <p>
-          <strong>{user.displayName}</strong>
+          <strong>{displayName}</strong>
           <br />
           {user.email}
         </p>
@@ -28,13 +33,13 @@ const NavigationProfileMenu = ({ user, onLogout, active }) => {
         </button>
       </p>
     </div>
-  );
-};
+  )
+}
 
 NavigationProfileMenu.propTypes = {
   user: PropTypes.object,
   onLogout: PropTypes.func,
-  active: PropTypes.bool
-};
+  active: PropTypes.bool,
+}
 
-export default NavigationProfileMenu;
+export default NavigationProfileMenu

@@ -27,6 +27,7 @@ const NavigationProfile = user => {
             <NavigationProfileMenu
               active={menuActive}
               user={auth.user}
+              userClaims={auth.userClaims}
               onLogout={() => auth.signOut()}
             />
           </div>
