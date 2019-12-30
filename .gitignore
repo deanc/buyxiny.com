@@ -6,3 +6,5 @@
 *.sw*
 
 .env*
+
+config/firebase.credentials.json

@@ -1,5 +1,4 @@
 const path = require(`path`)
-const config = require("./src/config/general.json")
 const _ = require("lodash")
 
 exports.createPages = async ({ graphql, actions, reporter }) => {
@@ -43,11 +42,13 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   // get all unique types
   const types = _.uniq(result.data.allItem.edges.map(({ node }) => node.type))
 
+  const validCountries = process.env.GATSBY_VALID_COUNTRIES.split(",")
+
   // Create pages for each country
   const countryTemplate = path.resolve(`./src/templates/CountryPage.js`)
   result.data.allCountry.edges.forEach(({ node }) => {
     const slug = node.slug
-    if (config.validCountries.includes(slug)) {
+    if (validCountries.includes(slug)) {
       // create root page
       const realPath = "q/" + slug
       createPage({
@@ -82,7 +83,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   result.data.allItem.edges.forEach(({ node }) => {
     const slug = node.slug
 
-    config.validCountries.forEach(country => {
+    validCountries.forEach(country => {
       const realPath = "q/where-to-buy-" + slug + "-in-" + country
       createPage({
         path: realPath,
