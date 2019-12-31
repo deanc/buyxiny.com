@@ -16,19 +16,47 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
+  	function isPublic() {
+    	return resource.data.active == 1;
+    }
+
+  	function isLoggedIn() {
+    	return request.auth.uid != null;
+    }
+
+  	function isAuthor() {
+      return request.auth.uid == request.resource.data.author;
+    }
+
+    function isAdmin() {
+    	return request.auth.uid != null && 'admin' in request.auth.token.roles;
+    }
+
+    function isModerator() {
+    	return request.auth.uid != null && 'moderator' in request.auth.token.roles;
+    }
+
+    function hasRole() {
+    	return isAdmin() || isModerator();
+    }
+
     match /countries/{country} {
       allow read;
-      allow write: if false;
+      allow write,update,delete: if isAdmin();
     }
 
     match /locations/{location} {
       allow read;
-      allow write: if request.auth.uid != null;
+      allow create: if isLoggedIn();
+      allow update: if isAuthor() || hasRole();
+      allow delete: if hasRole();
     }
 
     match /items/{item} {
       allow read;
-      allow write: if request.auth.uid == request.resource.data.author;
+      allow create: if isLoggedIn();
+      allow update: if isAuthor() || hasRole();
+      allow delete: if hasRole();
     }
   }
 }
