@@ -75,6 +75,10 @@ h1 {
   font-size: em(48);
   line-height: 1.15;
 
+  @media (max-width: $bp-tablet) {
+    font-size: em(32);
+  }
+
   .hl {
     color: $brown;
   }
@@ -106,6 +110,10 @@ nav {
   justify-content: space-between;
   align-items: center;
   padding: 2em 0;
+
+  @media (max-width: $bp-mobile) {
+    padding: 10px 0;
+  }
 }
 
 .btn {
@@ -219,6 +227,10 @@ nav .nav-profile {
   width: 350px;
   text-align: center;
   display: none;
+
+  @media (max-width: $bp-mobile) {
+    width: 260px;
+  }
 }
 
 .navigation-profile-menu.active {
