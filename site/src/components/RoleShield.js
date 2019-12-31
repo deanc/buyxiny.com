@@ -12,7 +12,7 @@ const RoleShield = ({ roles }) => {
     shield = moderatorShield
   }
   return (
-    <div className="role-shield">{shield && <img src={shield} alt="" />}</div>
+    <span className="role-shield">{shield && <img src={shield} alt="" />}</span>
   )
 }
 
