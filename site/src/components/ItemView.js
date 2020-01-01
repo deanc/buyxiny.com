@@ -4,6 +4,7 @@ import useItem from "../hooks/useItem"
 import { Facebook as FacebookLoader } from "react-content-loader"
 import ItemLocation from "./ItemLocation"
 import { capitalize } from "lodash"
+import Comments from "./Comments"
 
 const ItemView = ({ id, name, slug, country }) => {
   const { item, loading } = useItem(id)
@@ -27,6 +28,8 @@ const ItemView = ({ id, name, slug, country }) => {
     })
   }
 
+  const identifier = `item-${item.id}-country-${country}`
+
   return (
     <div className="item-view">
       <div className="container">
@@ -35,7 +38,9 @@ const ItemView = ({ id, name, slug, country }) => {
           <span className="hl">{capitalize(country)}</span>
         </h1>
         {loadingContent}
-        {locations}
+        <div className="locations">{locations}</div>
+        <h2>Discussion</h2>
+        <Comments identifier={identifier} />
       </div>
     </div>
   )

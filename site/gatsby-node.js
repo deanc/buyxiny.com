@@ -62,7 +62,6 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
 
       // create type page
       types.forEach(type => {
-        // TODO: fix pluralization being hardcoded (again)
         createPage({
           path: realPath + "/" + type + "s",
           component: countryTemplate,
