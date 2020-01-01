@@ -2,28 +2,36 @@ import React, { useState, useRef } from "react"
 
 // hooks
 import { useAuth } from "../hooks/useAuth"
-import { useOnClickOutside } from "../hooks/useOnClickOutside"
+import useOnClickOutside from "use-onclickoutside"
 
 // components
 import Gravatar from "./Gravatar"
 import NavigationProfileMenu from "./NavigationProfileMenu"
 
 const NavigationProfile = user => {
-  const ref = useRef()
+  // add auth
   const auth = useAuth()
+
+  // handle clicking outside menu collapse stuff
+  const divRef = useRef()
+  const buttonRef = useRef()
   const [menuActive, setMenuActive] = useState(false)
-  useOnClickOutside(ref, () => setMenuActive(false))
+  useOnClickOutside(divRef, e => {
+    if (!buttonRef.current.contains(e.target)) {
+      setMenuActive(false)
+    }
+  })
 
   let userBlock = <span className="spinner"></span>
   if (auth && auth.initialized) {
     if (auth.user) {
       userBlock = (
         <>
-          <button onClick={() => setMenuActive(!menuActive)}>
+          <button ref={buttonRef} onClick={() => setMenuActive(!menuActive)}>
             <Gravatar email={auth.user.email} size={32} active={menuActive} />
           </button>
           {/* A wrapping element is needed here as we cant ref a component */}
-          <div ref={ref}>
+          <div ref={divRef}>
             <NavigationProfileMenu
               active={menuActive}
               user={auth.user}

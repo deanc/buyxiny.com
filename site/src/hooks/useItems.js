@@ -27,12 +27,14 @@ const useItems = type => {
         .firestore()
         .collection("items")
         .where("type", "==", type)
+        .where("active", "==", 1)
         .orderBy("name")
         .onSnapshot(handleSnapshot, handleError)
     } else {
       unsubscribe = firebase
         .firestore()
         .collection("items")
+        .where("active", "==", 1)
         .orderBy("name")
         .onSnapshot(handleSnapshot, handleError)
     }
