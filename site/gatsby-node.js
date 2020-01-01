@@ -46,6 +46,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
 
   // Create pages for each country
   const countryTemplate = path.resolve(`./src/templates/CountryPage.js`)
+  const addItemTemplate = path.resolve(`./src/templates/AddItemPage.js`)
   result.data.allCountry.edges.forEach(({ node }) => {
     const slug = node.slug
     if (validCountries.includes(slug)) {
@@ -61,6 +62,18 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
       })
 
       // create type page
+      types.forEach(type => {
+        createPage({
+          path: realPath + "/add",
+          component: addItemTemplate,
+          context: {
+            // path,
+            country: node.slug,
+          },
+        })
+      })
+
+      // create add pages
       types.forEach(type => {
         createPage({
           path: realPath + "/" + type + "s",

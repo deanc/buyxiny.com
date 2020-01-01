@@ -1,0 +1,41 @@
+form {
+
+    .form-row {
+        display: block;
+        margin-bottom: 1em;
+
+        label {
+            display: block;
+        }
+
+        &.inline {
+            label {
+                display: inline-block;
+                margin-right: 1em;
+
+                &:last-child {
+                    margin-right: 0;
+                }
+            }
+        }
+
+        input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        input[type="text"] {
+            font-family: inherit;
+            padding: 10px 10px;
+            border-radius: 3px;
+            border: 1px solid $brownAlt;
+            box-shadow: none;
+
+            &:focus {
+                border-color: darken($brownAlt, 10%);
+                outline: 0;
+            }
+        }
+
+    }
+
+}
