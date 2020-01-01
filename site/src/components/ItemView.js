@@ -28,6 +28,8 @@ const ItemView = ({ id, name, slug, country }) => {
     })
   }
 
+  const identifier = `item-${item.id}-country-${country}`
+
   return (
     <div className="item-view">
       <div className="container">
@@ -38,7 +40,7 @@ const ItemView = ({ id, name, slug, country }) => {
         {loadingContent}
         <div className="locations">{locations}</div>
         <h2>Discussion</h2>
-        <Comments identifier={`item-${slug}-country-${country}`} />
+        <Comments identifier={identifier} />
       </div>
     </div>
   )
