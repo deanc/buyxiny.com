@@ -1,41 +1,87 @@
 form {
 
-    .form-row {
-        display: block;
-        margin-bottom: 1em;
+  fieldset {
+    background: $brownAlt;
+    border: 0;
+    border-radius: 3px;
+    padding: 2em;
+    margin-bottom: 1em;
+  }
 
-        label {
-            display: block;
-        }
+  h2 {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
 
-        &.inline {
-            label {
-                display: inline-block;
-                margin-right: 1em;
+  .info {
+    opacity: .7;
+    font-size: .85em;
 
-                &:last-child {
-                    margin-right: 0;
-                }
-            }
-        }
-
-        input[type="radio"] {
-            margin-right: 10px;
-        }
-
-        input[type="text"] {
-            font-family: inherit;
-            padding: 10px 10px;
-            border-radius: 3px;
-            border: 1px solid $brownAlt;
-            box-shadow: none;
-
-            &:focus {
-                border-color: darken($brownAlt, 10%);
-                outline: 0;
-            }
-        }
-
+    ul {
+      margin-top: 0;
     }
 
+    p {
+      margin-bottom: .25em;
+    }
+  }
+
+
+  .form-row {
+    display: block;
+    margin-bottom: 1em;
+
+    label {
+      display: block;
+      color: #000;
+    }
+
+    &.inline {
+      .label {
+        display: block;
+        color: #000;
+      }
+
+      label {
+        display: inline-block;
+        margin-right: 1em;
+
+        &:last-child {
+          margin-right: 0;
+        }
+      }
+    }
+
+    input[type="radio"] {
+      margin-right: 10px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      font-family: inherit;
+      font-size: inherit;
+      padding: 10px 10px;
+      border-radius: 3px;
+      border: 1px solid $brownAlt;
+      box-shadow: none;
+      width: 100%;
+      background: $lightBrown;
+
+      @include placeholder {
+        color: lighten($brown, 30%);
+      }
+
+      &:focus {
+        border-color: darken($brownAlt, 10%);
+        outline: 0;
+      }
+    }
+  }
+
+  input[type="button"],
+  input[type="submit"],
+  button {
+    @extend .btn;
+  }
 }
