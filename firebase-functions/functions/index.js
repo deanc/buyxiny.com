@@ -66,7 +66,7 @@ exports.sendCollectionToAlgolia = functions.https.onRequest(
     const itemsQuerySnapshot = await db.collection("items").get()
     itemsQuerySnapshot.docs.forEach(doc => {
       const document = doc.data()
-      const record = algoliaHelpers.flattenItem(document)
+      const record = algoliaHelpers.flattenItem(doc.id, document)
       itemRecords.push(record)
     })
 
@@ -75,7 +75,7 @@ exports.sendCollectionToAlgolia = functions.https.onRequest(
       const document = doc.data()
       const country = await document.country.get()
       document.country = country.data().name
-      const record = algoliaHelpers.flattenLocation(document)
+      const record = algoliaHelpers.flattenLocation(doc.id, document)
       locationRecords.push(record)
     }
 
@@ -85,6 +85,9 @@ exports.sendCollectionToAlgolia = functions.https.onRequest(
     const saveItems = await itemsIndex.saveObjects(itemRecords)
     const saveLocations = await locationsIndex.saveObjects(locationRecords)
 
-    res.status(200).send(Object.assign(saveItems, saveLocations))
+    res.status(200).send({
+      items: saveItems,
+      locations: saveLocations,
+    })
   }
 )

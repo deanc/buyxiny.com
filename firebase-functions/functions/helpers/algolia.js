@@ -15,7 +15,9 @@ const saveDocumentInAlgolia = async (index, snapshot) => {
       // Removes the possibility of snapshot.data() being undefined.
       if (record.active) {
         const collectionIndex = getIndex(index)
-        const res = await collectionIndex.saveObject(flatten(index, record)) // Adds or replaces a specific object.
+        const res = await collectionIndex.saveObject(
+          flatten(index, snapshot.id, record)
+        ) // Adds or replaces a specific object.
         return res
       }
     }
@@ -33,20 +35,20 @@ const updateDocumentInAlgolia = async (index, change) => {
         // previously indexed in algolia and must now be removed.
         const res = await deleteDocumentFromAlgolia(
           index,
-          flattenItem(change.after)
+          flattenItem(change.id, docAfterChange)
         )
         return res
       } else if (docAfterChange.active) {
         const res = await saveDocumentInAlgolia(
           index,
-          flattenItem(change.after)
+          flattenItem(change.id, docAfterChange)
         )
         return res
       }
     } else {
       const res = await saveDocumentInAlgolia(
         index,
-        flatten(index, change.after)
+        flatten(index, change.id, docAfterChange)
       )
       return res
     }
@@ -64,17 +66,17 @@ const deleteDocumentFromAlgolia = async (index, snapshot) => {
   return
 }
 
-const flattenItem = snapshot => {
+const flattenItem = (id, snapshot) => {
   return {
-    objectID: snapshot.id,
+    objectID: id,
     name: snapshot.name,
     type: snapshot.type,
   }
 }
 
-const flattenLocation = snapshot => {
+const flattenLocation = (id, snapshot) => {
   return {
-    objectID: snapshot.id,
+    objectID: id,
     name: snapshot.name,
     address: snapshot.address,
     url: snapshot.url,
@@ -82,12 +84,12 @@ const flattenLocation = snapshot => {
   }
 }
 
-const flatten = (index, snapshot) => {
+const flatten = (index, id, snapshot) => {
   switch (index) {
     case "items":
-      return flattenItem(snapshot)
+      return flattenItem(id, snapshot)
     case "locations":
-      return flattenLocation(snapshot)
+      return flattenLocation(id, snapshot)
     default:
       return snapshot
   }
