@@ -70,6 +70,7 @@ const flattenItem = (id, snapshot) => {
   return {
     objectID: id,
     name: snapshot.name,
+    slug: snapshot.slug,
     type: snapshot.type,
   }
 }
