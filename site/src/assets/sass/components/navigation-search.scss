@@ -1,8 +1,54 @@
 .navigation-search {
+
+  position: relative;
+  min-width: 280px;
+  max-width: 500px;
+  width: 50%;
+
+  input[type="search"],
   input[type="text"] {
     background: $almostWhite;
     border: 1px solid $lightBrown;
     padding: 10px 1em;
-    width: 300px;
+    color: $brown;
+
+    &:focus {
+      outline: none !important;
+      border: 1px solid $lightBrown;
+      box-shadow: 0 0 10px darken($lightBrown, 20%);
+    }
+  }
+
+  .ais-Hits-list {
+    position: absolute;
+    left: 0;
+    right: 0;
+    width: 100%;
+    top: 100%;
+    margin: 0;
+    padding: 0;
+    box-shadow: 0 3px 12px -10px rgba(31, 18, 53, 0.5);
+  }
+
+  .ais-Hits-item {
+    margin: 0;
+    background: $lightBrown;
+    width: 100%;
+    border: 0;
+    box-shadow: none;
+    padding: 5px 10px;
+
+    a {
+      text-decoration: none;
+      color: $brown;
+    }
+  }
+
+  .ais-SearchBox-submitIcon {
+    display: none;
+  }
+
+  .ais-Highlight-highlighted {
+    //background: #fff;
   }
 }

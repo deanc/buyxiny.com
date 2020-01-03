@@ -6,6 +6,7 @@
   "author": "Kyle Mathews <mathews.kyle@gmail.com>",
   "dependencies": {
     "@deanc/gatsby-source-firestorer": "^5.0.2",
+    "algoliasearch": "^3.35.1",
     "babel-plugin-styled-components": "^1.10.6",
     "classnames": "^2.2.6",
     "disqus-react": "^1.0.7",
@@ -24,6 +25,7 @@
     "gatsby-plugin-styled-components": "^3.1.16",
     "gatsby-source-filesystem": "^2.1.43",
     "gatsby-transformer-sharp": "^2.3.7",
+    "instantsearch.css": "^7.3.1",
     "md5": "^2.2.1",
     "node-sass": "^4.13.0",
     "prop-types": "^15.7.2",
@@ -31,6 +33,7 @@
     "react-content-loader": "^4.3.3",
     "react-dom": "^16.12.0",
     "react-helmet": "^5.2.1",
+    "react-instantsearch-dom": "^6.1.0",
     "styled-components": "^4.4.1",
     "use-onclickoutside": "^0.3.1"
   },
