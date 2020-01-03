@@ -33,7 +33,7 @@ const searchClient = {
   },
 }
 
-const SearchResult = ({ hit, searchState, setSearchState }) => {
+const SearchResult = ({ hit, searchState, setSearchState, country }) => {
   return (
     <div>
       <Link
@@ -43,7 +43,7 @@ const SearchResult = ({ hit, searchState, setSearchState }) => {
             query: "",
           })
         }}
-        to={`/q/where-to-buy-${hit.slug}-in-finland`}
+        to={`/q/where-to-buy-${hit.slug}-in-${country}`}
       >
         <Highlight attribute="name" hit={hit} />
       </Link>
@@ -53,11 +53,13 @@ const SearchResult = ({ hit, searchState, setSearchState }) => {
 
 const NavigationSearch = ({ country }) => {
   const [searchState, setSearchState] = useState({})
+  console.log(country)
   const Hit = React.useRef(props => (
     <SearchResult
       {...props}
       searchState={searchState}
       setSearchState={setSearchState}
+      country={country}
     />
   ))
 
