@@ -3,11 +3,11 @@ import NavigationProfile from "./NavigationProfile"
 import Logo from "./Logo"
 import NavigationSearch from "./NavigationSearch"
 
-const Navigation = () => {
+const Navigation = ({ country }) => {
   return (
     <nav>
       <Logo />
-      <NavigationSearch />
+      <NavigationSearch country={country} />
       <ul>
         <li>
           <NavigationProfile />

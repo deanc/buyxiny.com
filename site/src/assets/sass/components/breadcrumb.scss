@@ -3,18 +3,21 @@
   padding: 0.25em 1em;
   border-radius: 3px;
   margin: 0 0 1em 0;
+
   ul {
     list-style: none;
     margin: 0;
     padding: 0;
 
-    > li {
+    >li {
       display: inline-block;
+
       &:after {
         content: ">";
         margin: 0 0.5em;
         opacity: 0.5;
       }
+
       &:last-child:after {
         content: "";
       }
@@ -23,5 +26,9 @@
 
   a {
     color: $brown;
+  }
+
+  @media (max-width: $bp-mobile) {
+    font-size: 12px;
   }
 }
