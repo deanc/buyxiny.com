@@ -1,7 +1,6 @@
 import React from "react"
 import SEO from "../components/SEO"
 import PropTypes from "prop-types"
-import ItemView from "../components/ItemView"
 import Breadcrumb from "../components/Breadcrumb"
 import AddItemForm from "../components/forms/AddItemForm"
 import { capitalize } from "lodash"

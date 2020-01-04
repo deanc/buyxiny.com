@@ -1,6 +1,67 @@
 import React from "react"
 
-import { Formik, Form, Field, ErrorMessage, useField } from "formik"
+import { Formik, Form, Field, useField } from "formik"
+import ItemAutocomplete from "./ItemAutocomplete"
+
+const Fieldset = ({ heading, children }) => {
+  return (
+    <fieldset>
+      {heading && <h2>{heading}</h2>}
+      {children}
+    </fieldset>
+  )
+}
+
+const FormRow = ({ children }) => {
+  return <div className="form-row">{children}</div>
+}
+
+const FieldInfo = ({ children }) => {
+  return (
+    <FormRow>
+      <div className="info">{children}</div>
+    </FormRow>
+  )
+}
+
+const ItemFieldInfo = () => {
+  return (
+    <FieldInfo>
+      <p>Some guidelines:</p>
+      <ul>
+        <li>
+          Please enter a fairly descriptive name including the brand (e.g.
+          'Typhoo tea' and not just 'Tea', or 'Cadbury Dairy Milk' not just
+          'Dairy Milk')
+        </li>
+        <li>
+          If entering a service, be as descriptive as possible also with the
+          service name.
+        </li>
+      </ul>
+    </FieldInfo>
+  )
+}
+
+const LocationFieldInfo = () => {
+  return (
+    <FieldInfo>
+      <p>Some guidelines:</p>
+
+      <ul>
+        <li>
+          If you are entering the name of a chain, enter the city name as part
+          of the place name. For example don't enter "S-market" as the place
+          name but rather "S-market Hakaniemi"
+        </li>
+        <li>
+          For retail stores, please enter an address and website URL if they
+          have one. For online stores just enter the website URL.
+        </li>
+      </ul>
+    </FieldInfo>
+  )
+}
 
 const TextInput = ({ label, ...props }) => {
   // useField() returns [formik.getFieldProps(), formik.getFieldMeta()]
@@ -17,6 +78,31 @@ const TextInput = ({ label, ...props }) => {
   )
 }
 
+const RadioGroup = ({ label, name, fields }) => {
+  return (
+    <div className="form-row inline">
+      <div className="label">
+        {label}
+        {/* Please choose whether this is a product or service you are adding: */}
+      </div>
+      {fields.map((f, i) => (
+        <label key={i}>
+          <Field type="radio" name={name} value={f.value} />
+          {f.label}
+        </label>
+      ))}
+    </div>
+  )
+}
+
+const Submit = ({ isSubmitting, label }) => {
+  return (
+    <button type="submit" disabled={isSubmitting}>
+      {label}
+    </button>
+  )
+}
+
 const AddItemForm = props => {
   return (
     <Formik
@@ -29,13 +115,6 @@ const AddItemForm = props => {
       }}
       validate={values => {
         const errors = {}
-        if (!values.email) {
-          errors.email = "Required"
-        } else if (
-          !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-        ) {
-          errors.email = "Invalid email address"
-        }
         return errors
       }}
       onSubmit={(values, { setSubmitting }) => {
@@ -58,91 +137,58 @@ const AddItemForm = props => {
         /* and other goodies */
       }) => (
         <Form>
-          <fieldset>
-            <div className="form-row inline">
-              <div className="label">
-                Please choose whether this is a product or service you are
-                adding:
-              </div>
-              <label>
-                {/* name must match the Formik value key, and must
-                be set on all radio buttons in the group  */}
-                <Field type="radio" name="type" value="product" />
-                Product
-              </label>
-              <label>
-                <Field type="radio" name="type" value="service" />
-                Service
-              </label>
-            </div>
-          </fieldset>
+          <Fieldset>
+            <RadioGroup
+              name="type"
+              label={
+                "Please choose whether this is a product or service you are adding:"
+              }
+              fields={[
+                { label: "Product", value: "product" },
+                { label: "Service", value: "service" },
+              ]}
+            />
+          </Fieldset>
 
-          <fieldset>
-            <h2>Item information</h2>
-
-            <div className="form-row">
-              <div className="info">
-                <p>Some guidelines:</p>
-                <ul>
-                  <li>
-                    Please enter a fairly descriptive name including the brand
-                    (e.g. 'Typhoo tea' and not just 'Tea', or 'Cadbury Dairy
-                    Milk' not just 'Dairy Milk')
-                  </li>
-                  <li>
-                    If entering a service, be as descriptive as possible also
-                    with the service name.
-                  </li>
-                </ul>
-              </div>
-              <TextInput
+          <Fieldset heading="Item information">
+            <ItemFieldInfo />
+            <FormRow>
+              <ItemAutocomplete
                 name="item_name"
-                label="Product/service name (required)"
-                placeholder="Enter the name of the product/service"
+                onSelectValue={setFieldValue}
+                indexName="items"
+                country={`finland`}
               />
-            </div>
-          </fieldset>
+            </FormRow>
+          </Fieldset>
 
-          <fieldset>
-            <h2>Where to buy it?</h2>
-
-            <div className="info">
-              <p>Some guidelines:</p>
-
-              <ul>
-                <li>
-                  If you are entering the name of a chain, enter the city name
-                  as part of the place name. For example don't enter "S-market"
-                  as the place name but rather "S-market Hakaniemi"
-                </li>
-                <li>
-                  For retail stores, please enter an address and website URL if
-                  they have one. For online stores just enter the website URL.
-                </li>
-              </ul>
-            </div>
-            <div className="form-row">
-              <TextInput name="place_name" label="Place name" />
-            </div>
-            <div className="form-row">
+          <Fieldset heading="Where to buy it?">
+            <LocationFieldInfo />
+            <FormRow>
+              <ItemAutocomplete
+                name="place_name"
+                onSelectValue={setFieldValue}
+                indexName="locations"
+                country={`finland`}
+              />
+            </FormRow>
+            <FormRow>
               <TextInput
                 name="url"
                 label="URL"
                 placeholder="https://www.example.com"
               />
-            </div>
-            <div className="form-row">
+            </FormRow>
+            <FormRow>
               <TextInput
                 name="address"
                 label="Address (if possible)"
                 placeholder="123 Street, City, Postcode"
               />
-            </div>
-          </fieldset>
+            </FormRow>
+          </Fieldset>
 
-          <button type="submit" disabled={isSubmitting}>
-            Submit
-          </button>
+          <Submit label="Submit" disabled={isSubmitting} />
         </Form>
       )}
     </Formik>
