@@ -1,28 +1,18 @@
-import React from "react"
+import React, { useState } from "react"
 
-import { Formik, Form, Field, useField } from "formik"
+import { Formik, Form } from "formik"
+import {
+  Fieldset,
+  FieldInfo,
+  FormRow,
+  FormLabel,
+  TextInput,
+  RadioGroup,
+  Submit,
+  FormError,
+} from "./formik/fields"
+import AddItemSchema from "./yup/schemas/AddItemSchema"
 import ItemAutocomplete from "./ItemAutocomplete"
-
-const Fieldset = ({ heading, children }) => {
-  return (
-    <fieldset>
-      {heading && <h2>{heading}</h2>}
-      {children}
-    </fieldset>
-  )
-}
-
-const FormRow = ({ children }) => {
-  return <div className="form-row">{children}</div>
-}
-
-const FieldInfo = ({ children }) => {
-  return (
-    <FormRow>
-      <div className="info">{children}</div>
-    </FormRow>
-  )
-}
 
 const ItemFieldInfo = () => {
   return (
@@ -63,47 +53,9 @@ const LocationFieldInfo = () => {
   )
 }
 
-const TextInput = ({ label, ...props }) => {
-  // useField() returns [formik.getFieldProps(), formik.getFieldMeta()]
-  // which we can spread on <input> and also replace ErrorMessage entirely.
-  const [field, meta] = useField(props)
-  return (
-    <>
-      <label htmlFor={props.id || props.name}>{label}</label>
-      <input type="text" className="text-input" {...field} {...props} />
-      {meta.touched && meta.error ? (
-        <div className="error">{meta.error}</div>
-      ) : null}
-    </>
-  )
-}
-
-const RadioGroup = ({ label, name, fields }) => {
-  return (
-    <div className="form-row inline">
-      <div className="label">
-        {label}
-        {/* Please choose whether this is a product or service you are adding: */}
-      </div>
-      {fields.map((f, i) => (
-        <label key={i}>
-          <Field type="radio" name={name} value={f.value} />
-          {f.label}
-        </label>
-      ))}
-    </div>
-  )
-}
-
-const Submit = ({ isSubmitting, label }) => {
-  return (
-    <button type="submit" disabled={isSubmitting}>
-      {label}
-    </button>
-  )
-}
-
 const AddItemForm = props => {
+  const [locationAutocompleted, setLocationAutocompleted] = useState(false)
+
   return (
     <Formik
       initialValues={{
@@ -113,30 +65,18 @@ const AddItemForm = props => {
         address: "",
         url: "",
       }}
-      validate={values => {
-        const errors = {}
-        return errors
-      }}
+      validationSchema={AddItemSchema}
       onSubmit={(values, { setSubmitting }) => {
         console.log(values)
         setTimeout(() => {
-          alert(JSON.stringify(values, null, 2))
+          // alert(JSON.stringify(values, null, 2))
           setSubmitting(false)
         }, 400)
       }}
     >
-      {({
-        values,
-        errors,
-        touched,
-        handleChange,
-        handleBlur,
-        handleSubmit,
-        setFieldValue,
-        isSubmitting,
-        /* and other goodies */
-      }) => (
+      {({ setFieldValue, isSubmitting, errors }) => (
         <Form>
+          {/* {errors && console.log(errors)} */}
           <Fieldset>
             <RadioGroup
               name="type"
@@ -153,30 +93,54 @@ const AddItemForm = props => {
           <Fieldset heading="Item information">
             <ItemFieldInfo />
             <FormRow>
+              <FormLabel label="Product/service name (required)" />
               <ItemAutocomplete
                 name="item_name"
                 onSelectValue={setFieldValue}
+                onChange={() => {}}
+                onSuggestionSelected={suggestion => {
+                  setFieldValue("item_name", suggestion.name)
+                }}
                 indexName="items"
                 country={`finland`}
               />
+              <FormError name="item_name" />
             </FormRow>
           </Fieldset>
 
           <Fieldset heading="Where to buy it?">
             <LocationFieldInfo />
             <FormRow>
+              <FormLabel label="Place name (required)" />
               <ItemAutocomplete
                 name="place_name"
                 onSelectValue={setFieldValue}
+                onSuggestionSelected={suggestion => {
+                  setFieldValue("place_name", suggestion.name)
+                  setFieldValue("url", suggestion.url ? suggestion.url : "")
+                  setFieldValue(
+                    "address",
+                    suggestion.address ? suggestion.address : ""
+                  )
+                  setLocationAutocompleted(true)
+                }}
+                onChange={() => {
+                  setLocationAutocompleted(false)
+                  setFieldValue("url", "")
+                  setFieldValue("address", "")
+                }}
                 indexName="locations"
                 country={`finland`}
               />
+              <FormError name="place_name" />
             </FormRow>
             <FormRow>
               <TextInput
                 name="url"
                 label="URL"
                 placeholder="https://www.example.com"
+                disabled={locationAutocompleted}
+                data-autocompleted={locationAutocompleted}
               />
             </FormRow>
             <FormRow>
@@ -184,6 +148,8 @@ const AddItemForm = props => {
                 name="address"
                 label="Address (if possible)"
                 placeholder="123 Street, City, Postcode"
+                disabled={locationAutocompleted}
+                data-autocompleted={locationAutocompleted}
               />
             </FormRow>
           </Fieldset>

@@ -9,9 +9,20 @@ const searchClient = algoliasearch(
   process.env.GATSBY_ALGOLIA_SEARCH_KEY
 )
 
-const ItemAutoComplete = ({ name, indexName, onSelectValue }) => (
+const ItemAutoComplete = ({
+  name,
+  indexName,
+  onSelectValue,
+  onSuggestionSelected,
+  onChange,
+}) => (
   <InstantSearch searchClient={searchClient} indexName={indexName}>
-    <AutoComplete name={name} onSelectValue={onSelectValue} />
+    <AutoComplete
+      name={name}
+      onSelectValue={onSelectValue}
+      onSuggestionSelected={onSuggestionSelected}
+      onChange={onChange}
+    />
     {/* <Configure hitsPerPage={1} /> */}
     {/* {/* <Index indexName="bestbuy" /> */}
     {/* <Index indexName="items" /> */}
@@ -25,6 +36,8 @@ class Example extends Component {
     currentRefinement: PropTypes.string.isRequired,
     refine: PropTypes.func.isRequired,
     onSelectValue: PropTypes.func.isRequired,
+    onSuggestionSelected: PropTypes.func.isRequired,
+    onChange: PropTypes.func,
   }
 
   state = {
@@ -36,12 +49,15 @@ class Example extends Component {
       value: newValue,
     })
     this.props.onSelectValue(this.props.name, newValue)
+    console.log(newValue)
+    this.props.onChange()
   }
 
-  onSuggestionSelected = (event, { method }) => {
+  onSuggestionSelected = (event, { suggestion, method }) => {
     if (method === "enter") {
       event.preventDefault()
     }
+    this.props.onSuggestionSelected(suggestion)
   }
 
   onSuggestionsFetchRequested = ({ value }) => {

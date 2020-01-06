@@ -1,5 +1,4 @@
 form {
-
   fieldset {
     background: $brownAlt;
     border: 0;
@@ -11,27 +10,33 @@ form {
   h2 {
     margin-top: 0;
     margin-bottom: 0;
+    color: #020826;
   }
 
   .info {
-    opacity: .7;
-    font-size: .85em;
+    opacity: 0.7;
+    font-size: 0.85em;
 
     ul {
       margin-top: 0;
     }
 
     p {
-      margin-bottom: .25em;
+      margin-bottom: 0.25em;
     }
   }
 
-
   .form-row {
+    position: relative;
     display: block;
     margin-bottom: 1em;
 
-    label {
+    .error {
+      color: $red;
+    }
+
+    label,
+    .label {
       display: block;
       color: #000;
     }
@@ -59,9 +64,10 @@ form {
     input[type="text"],
     input[type="email"],
     input[type="password"] {
+      position: relative;
       font-family: inherit;
       font-size: inherit;
-      padding: 10px 10px;
+      padding: 10px 40px 10px 10px;
       border-radius: 3px;
       border: 1px solid $brownAlt;
       box-shadow: none;
@@ -77,6 +83,18 @@ form {
         outline: 0;
       }
     }
+
+    input[data-autocompleted="true"] {
+      background: #f5ffeb;
+    }
+
+    input[data-autocompleted="true"] + .after:after {
+      content: "\2714";
+      position: absolute;
+      right: 15px;
+      top: 38px;
+      color: green;
+    }
   }
 
   input[type="button"],
@@ -90,7 +108,6 @@ form {
   }
 
   .react-autosuggest__container--open {
-
     input[type="text"],
     input[type="search"] {
       border-bottom-left-radius: 0;
