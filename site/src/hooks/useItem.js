@@ -4,11 +4,17 @@ import firebase from "../store/firebase"
 const useItem = id => {
   const [error, setError] = React.useState(false)
   const [loading, setLoading] = React.useState(true)
-  const [item, setItem] = React.useState([])
+  const [item, setItem] = React.useState(null)
 
   const firestore = firebase.firestore()
 
   useEffect(() => {
+    if (!id) {
+      setItem(null)
+      setLoading(false)
+      return
+    }
+
     const unsubscribeItem = firestore
       .collection("items")
       .doc(id)

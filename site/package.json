@@ -61,5 +61,8 @@
   },
   "bugs": {
     "url": "https://github.com/gatsbyjs/gatsby/issues"
+  },
+  "resolutions": {
+    "react-helmet/react-side-effect": "2.1.0"
   }
 }

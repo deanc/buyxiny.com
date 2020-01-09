@@ -1,4 +1,5 @@
 import React, { useState } from "react"
+import useItem from "../../hooks/useItem"
 
 import { Formik, Form } from "formik"
 import {
@@ -9,9 +10,8 @@ import {
   TextInput,
   RadioGroup,
   Submit,
-  FormError,
 } from "./formik/fields"
-import AddItemSchema from "./yup/schemas/AddItemSchema"
+import { AddItemSchema, AddLocationSchema } from "./yup/schemas/AddItemSchema"
 import AutocompleteField from "./AutocompleteField"
 
 const ItemFieldInfo = () => {
@@ -53,21 +53,25 @@ const LocationFieldInfo = () => {
   )
 }
 
-const AddItemForm = props => {
+const AddItemForm = ({ itemRef }) => {
   const [locationAutocompleted, setLocationAutocompleted] = useState(false)
+
+  const { item } = useItem(itemRef)
+
+  const schema = !itemRef ? AddItemSchema : AddLocationSchema
 
   return (
     <Formik
       initialValues={{
         type: "product",
         item_name: "",
-        item_ref: null,
+        item_ref: itemRef,
         place_name: "",
         place_ref: null,
         address: "",
         url: "",
       }}
-      validationSchema={AddItemSchema}
+      validationSchema={schema}
       onSubmit={(values, { setSubmitting }) => {
         console.log(values)
         setTimeout(() => {
@@ -93,22 +97,25 @@ const AddItemForm = props => {
           </Fieldset>
 
           <Fieldset heading="Item information">
-            <ItemFieldInfo />
+            {!item && <ItemFieldInfo />}
             <FormRow>
-              <FormLabel label="Product/service name (required)" />
-              <AutocompleteField
-                name="item_name"
-                refFieldName="item_ref"
-                setFieldValue={setFieldValue}
-                onChange={() => {}}
-                onSuggestionSelected={suggestion => {
-                  setFieldValue("item_name", suggestion.name)
-                  setFieldValue("item_ref", suggestion.objectID)
-                }}
-                indexName="items"
-                country={`finland`}
-                autoCompletedLabel="Awesome! We already have this item in our database. Please continue to add a location."
-              />
+              {!item && <FormLabel label="Product/service name (required)" />}
+              {!item && (
+                <AutocompleteField
+                  name="item_name"
+                  refFieldName="item_ref"
+                  setFieldValue={setFieldValue}
+                  onChange={() => {}}
+                  onSuggestionSelected={suggestion => {
+                    setFieldValue("item_name", suggestion.name)
+                    setFieldValue("item_ref", suggestion.objectID)
+                  }}
+                  indexName="items"
+                  country={`finland`}
+                  autoCompletedLabel="Awesome! We already have this item in our database. Please continue to add a location."
+                />
+              )}
+              {item && <h3>{item.name}</h3>}
             </FormRow>
           </Fieldset>
 

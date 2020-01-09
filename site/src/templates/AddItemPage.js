@@ -4,11 +4,20 @@ import PropTypes from "prop-types"
 import Breadcrumb from "../components/Breadcrumb"
 import AddItemForm from "../components/forms/AddItemForm"
 import { capitalize } from "lodash"
+import querystring from "querystring"
 
 import ShareImage from "../assets/img/fbshare.png"
 
 const AddItemPage = ({ pageContext: { id, slug, country, name } }) => {
   const capitalizedCountry = capitalize(country)
+
+  let form = <AddItemForm />
+  if (window.location.search.length) {
+    const queryBits = querystring.parse(window.location.search.slice(1))
+    if (queryBits.item) {
+      form = <AddItemForm itemRef={queryBits.item} />
+    }
+  }
 
   return (
     <>
@@ -30,7 +39,7 @@ const AddItemPage = ({ pageContext: { id, slug, country, name } }) => {
             },
           ]}
         />
-        <AddItemForm />
+        {form}
       </div>
     </>
   )
