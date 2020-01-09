@@ -1,10 +1,10 @@
 import React from "react"
 import Navigation from "./Navigation"
 
-const Header = ({ country }) => {
+const Header = props => {
   return (
     <header className="container">
-      <Navigation country={country} />
+      <Navigation {...props} />
     </header>
   )
 }

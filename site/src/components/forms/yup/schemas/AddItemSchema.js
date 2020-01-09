@@ -18,6 +18,20 @@ const AddItemSchema = Yup.object()
       .ensure()
       .min(3, "Place name must be at least 3 characters")
       .required("Required"),
+    place_ref: Yup.string()
+      .nullable()
+      .test(
+        "avoid-dupe",
+        "You can't add a location which exists to an item which already exists.",
+        function(val) {
+          const item = this.resolve(Yup.ref("item_ref"))
+          console.log(item)
+          if (val && item && val.length && item.length) {
+            return false
+          }
+          return true
+        }
+      ),
     url: Yup.string()
       .ensure()
       .url("Please enter a valid URL"),

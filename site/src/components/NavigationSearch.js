@@ -51,7 +51,7 @@ const SearchResult = ({ hit, searchState, setSearchState, country }) => {
   )
 }
 
-const NavigationSearch = ({ country }) => {
+const NavigationSearch = ({ country, showSearch }) => {
   const [searchState, setSearchState] = useState({})
   console.log(country)
   const Hit = React.useRef(props => (
@@ -63,7 +63,7 @@ const NavigationSearch = ({ country }) => {
     />
   ))
 
-  if (!country || !country.length) {
+  if (!country || !country.length || showSearch === false) {
     return <></>
   }
 

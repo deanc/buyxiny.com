@@ -12,7 +12,7 @@ import {
   FormError,
 } from "./formik/fields"
 import AddItemSchema from "./yup/schemas/AddItemSchema"
-import ItemAutocomplete from "./ItemAutocomplete"
+import AutocompleteField from "./AutocompleteField"
 
 const ItemFieldInfo = () => {
   return (
@@ -61,7 +61,9 @@ const AddItemForm = props => {
       initialValues={{
         type: "product",
         item_name: "",
+        item_ref: null,
         place_name: "",
+        place_ref: null,
         address: "",
         url: "",
       }}
@@ -94,17 +96,19 @@ const AddItemForm = props => {
             <ItemFieldInfo />
             <FormRow>
               <FormLabel label="Product/service name (required)" />
-              <ItemAutocomplete
+              <AutocompleteField
                 name="item_name"
-                onSelectValue={setFieldValue}
+                refFieldName="item_ref"
+                setFieldValue={setFieldValue}
                 onChange={() => {}}
                 onSuggestionSelected={suggestion => {
                   setFieldValue("item_name", suggestion.name)
+                  setFieldValue("item_ref", suggestion.objectID)
                 }}
                 indexName="items"
                 country={`finland`}
+                autoCompletedLabel="Awesome! We already have this item in our database. Please continue to add a location."
               />
-              <FormError name="item_name" />
             </FormRow>
           </Fieldset>
 
@@ -112,9 +116,10 @@ const AddItemForm = props => {
             <LocationFieldInfo />
             <FormRow>
               <FormLabel label="Place name (required)" />
-              <ItemAutocomplete
+              <AutocompleteField
                 name="place_name"
-                onSelectValue={setFieldValue}
+                refFieldName="place_ref"
+                setFieldValue={setFieldValue}
                 onSuggestionSelected={suggestion => {
                   setFieldValue("place_name", suggestion.name)
                   setFieldValue("url", suggestion.url ? suggestion.url : "")
@@ -122,6 +127,7 @@ const AddItemForm = props => {
                     "address",
                     suggestion.address ? suggestion.address : ""
                   )
+                  setFieldValue("place_ref", suggestion.objectID)
                   setLocationAutocompleted(true)
                 }}
                 onChange={() => {
@@ -132,7 +138,6 @@ const AddItemForm = props => {
                 indexName="locations"
                 country={`finland`}
               />
-              <FormError name="place_name" />
             </FormRow>
             <FormRow>
               <TextInput

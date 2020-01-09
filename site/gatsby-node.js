@@ -58,6 +58,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
         context: {
           // path,
           country: node.slug,
+          showSearch: true,
         },
       })
 
@@ -69,6 +70,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
           context: {
             // path,
             country: node.slug,
+            showSearch: false,
           },
         })
       })
@@ -82,6 +84,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
             // path,
             country: node.slug,
             type,
+            showSearch: true,
           },
         })
       })
@@ -106,6 +109,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
           name: node.name,
           slug,
           country,
+          showSearch: true,
         },
       })
     })

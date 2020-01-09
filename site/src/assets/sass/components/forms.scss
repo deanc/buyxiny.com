@@ -84,16 +84,27 @@ form {
       }
     }
 
-    input[data-autocompleted="true"] {
-      background: #f5ffeb;
+    .input-holder {
+      position: relative;
     }
 
-    input[data-autocompleted="true"] + .after:after {
+    input[data-autocompleted="true"],
+    input.autocompleted {
+      background: #f5ffeb;
+      border-color: $green;
+    }
+
+    .autocomplete-label {
+      color: $green;
+    }
+
+    input[data-autocompleted="true"]+.after:after,
+    input.autocompleted+.after:after {
       content: "\2714";
       position: absolute;
       right: 15px;
-      top: 38px;
-      color: green;
+      top: 8px;
+      color: $green;
     }
   }
 
@@ -108,6 +119,7 @@ form {
   }
 
   .react-autosuggest__container--open {
+
     input[type="text"],
     input[type="search"] {
       border-bottom-left-radius: 0;
