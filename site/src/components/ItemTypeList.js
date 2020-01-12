@@ -33,7 +33,7 @@ const ItemTypeList = ({ country, currentType }) => {
     },
     ...remappedTypes,
     {
-      label: "+ Add<span class='hide-mobile'> item/service</span>",
+      label: "+ Add<span class='hide-mobile'> product/service</span>",
       linkTo: `/q/${country}/add`,
       push: "right",
       active: true,
