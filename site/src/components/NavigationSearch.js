@@ -53,7 +53,6 @@ const SearchResult = ({ hit, searchState, setSearchState, country }) => {
 
 const NavigationSearch = ({ country, showSearch }) => {
   const [searchState, setSearchState] = useState({})
-  console.log(country)
   const Hit = React.useRef(props => (
     <SearchResult
       {...props}
