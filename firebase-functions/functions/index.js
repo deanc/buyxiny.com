@@ -22,7 +22,7 @@ exports.collectionOnCreate = functions.firestore
   .document("{collection}/{id}")
   .onCreate(async (snapshot, context) => {
     if (!collectionsToMonitor.includes(context.params.collection)) {
-      return
+      return null
     }
 
     const promises = []
@@ -37,7 +37,7 @@ exports.collectionOnUpdate = functions.firestore
   .document("{collection}/{id}")
   .onUpdate(async (change, context) => {
     if (!collectionsToMonitor.includes(context.params.collection)) {
-      return
+      return null
     }
 
     const promises = []
@@ -52,7 +52,7 @@ exports.collectionOnDelete = functions.firestore
   .document("{collection}/{id}")
   .onDelete(async (snapshot, context) => {
     if (!collectionsToMonitor.includes(context.params.collection)) {
-      return
+      return null
     }
 
     const promises = []
@@ -97,8 +97,9 @@ exports.sendCollectionToAlgolia = functions.https.onRequest(
   }
 )
 
+// route for adding an item
 exports.addItem = functions.https.onRequest(async (req, res) => {
-  cors(req, res, () => {
+  cors(req, res, async () => {
     if (req.method !== "POST") {
       return res.status(405).send({
         error: "Invalid HTTP method.",
@@ -107,72 +108,97 @@ exports.addItem = functions.https.onRequest(async (req, res) => {
 
     const formData = req.body
 
-    // basic validation for now
+    // basic validation for now checking some fields are set
     if (
-      Object.keys(formData).length &&
-      formData.type &&
-      formData.item_name &&
-      (formData.location_name || formData.location_ref) &&
-      (formData.url || formData.address) &&
-      formData.country_ref
+      !Object.keys(formData).length ||
+      !formData.type ||
+      !formData.item_name ||
+      (!formData.location_name && !formData.location_ref) ||
+      (formData.location_name && (!formData.url || !formData.address)) ||
+      !formData.author_ref ||
+      !formData.country_ref
     ) {
-      const itemObject = firestoreHelpers.createItemObject(formData)
-
-      // if we are handling a new location let's add it first
-      if (!formData.location_ref || !formData.location_ref.length) {
-        const locationObject = firestoreHelpers.createLocationObject(
-          formData,
-          db.doc("countries/" + formData.country_ref)
-        )
-        firestoreHelpers
-          .addLocation(db, locationObject)
-          .then(locationRef => {
-            firestoreHelpers
-              .addItem(db, itemObject, locationRef.id)
-              .then(itemRef => {
-                res.status(200).send({
-                  itemRef: itemRef.id,
-                  locationRef: locationRef.id,
-                })
-              })
-              .catch(e => {
-                console.log(e)
-                res.status(500).send({
-                  error: "Could not save new item with new location",
-                })
-              })
-          })
-          .catch(e => {
-            console.log(e)
-            res.status(500).send({
-              error: "Could not save new location",
-            })
-          })
-      } else {
-        firestoreHelpers
-          .addItem(db, itemObject, formData.location_ref)
-          .then(itemRef => {
-            res.status(200).send({
-              itemRef: itemRef.id,
-            })
-          })
-          .catch(e => {
-            console.log(e)
-            res.status(500).send({
-              error: "Could not save item with existing location",
-            })
-          })
-      }
-    } else {
-      res.status(400).send({
+      return res.status(400).send({
         error: "Some fields are empty...",
       })
+    }
+
+    // check if item already exists
+    const itemExists = await firestoreHelpers.itemExists(db, formData.item_name)
+    if (itemExists) {
+      return res.status(400).send({
+        error: "This item already exists",
+      })
+    }
+
+    // check if location already exists
+    if (!formData.location_ref) {
+      const locationExists = await firestoreHelpers.locationExists(
+        db,
+        formData.location_name
+      )
+      if (locationExists) {
+        return res.status(400).send({
+          error: "This location already exists",
+        })
+      }
+    }
+
+    // create the item object from the form data coming in
+    const itemObject = firestoreHelpers.createItemObject(formData)
+
+    // if we are handling a new location let's add it first
+    if (!formData.location_ref || !formData.location_ref.length) {
+      const locationObject = firestoreHelpers.createLocationObject(
+        formData,
+        db.doc("countries/" + formData.country_ref)
+      )
+
+      try {
+        const locationRef = await firestoreHelpers.addLocation(
+          db,
+          locationObject
+        )
+        const itemRef = await firestoreHelpers.addItem(
+          db,
+          itemObject,
+          locationRef.id
+        )
+        return res.status(200).send({
+          itemRef: itemRef.id,
+          locationRef: locationRef.id,
+        })
+      } catch (e) {
+        console.log(e)
+        return res.status(500).send({
+          error: "Could not save new location + item",
+        })
+      }
+    }
+    // otherewise just add the existing location to new item
+    else {
+      try {
+        const itemRef = await firestoreHelpers.addItem(
+          db,
+          itemObject,
+          formData.location_ref
+        )
+        return res.status(200).send({
+          itemRef: itemRef.id,
+        })
+      } catch (e) {
+        console.log(e)
+        return res.status(500).send({
+          error: "Could not save item with existing location",
+        })
+      }
     }
   })
 })
 
+// route for adding just a location
 exports.addLocationToItem = functions.https.onRequest(async (req, res) => {
-  cors(req, res, () => {
+  cors(req, res, async () => {
     if (req.method !== "POST") {
       return res.status(405).send({
         error: "Invalid HTTP method.",
@@ -188,53 +214,74 @@ exports.addLocationToItem = functions.https.onRequest(async (req, res) => {
       })
     }
 
+    // check if location already exists
+    if (!formData.location_ref) {
+      const locationExists = await firestoreHelpers.locationExists(
+        db,
+        formData.location_name
+      )
+      if (locationExists) {
+        return res.status(400).send({
+          error: "This location already exists",
+        })
+      }
+    }
+
+    // basic check against empty fields if we're not doing
+    // a simple insert of item ref and location ref
+    if (
+      !formData.location_ref &&
+      (!formData.country_ref ||
+        !formData.location_name ||
+        (!formData.url && !formData.address))
+    ) {
+      return res.status(400).send({
+        error: "Missing new location fields",
+      })
+    }
+
     // simplest case is item ref + location ref
     if (formData.item_ref && formData.location_ref) {
-      db.collection("items")
-        .doc(formData.item_ref)
-        .update({
-          locations: admin.firestore.FieldValue.arrayUnion(
-            db.doc("locations/" + formData.location_ref)
-          ),
+      try {
+        const res = firestoreHelpers.addLocationToItem(
+          db,
+          formData.item_ref,
+          formData.location_ref
+        )
+        return res.status(200).send({})
+      } catch (e) {
+        console.log(e)
+        return res.status(500).send({
+          error: "Could not add existing location to existing item",
         })
-      res.status(200).send({})
+      }
     }
     // otherwise add the location add to item
     else {
-      if (
-        !formData.country_ref ||
-        !formData.location_name ||
-        (!formData.url && !formData.address)
-      ) {
-        return res.status(400).send({
-          error: "Missing new location fields",
-        })
-      }
-
       const locationObject = firestoreHelpers.createLocationObject(
         formData,
         db.doc("countries/" + formData.country_ref)
       )
-      firestoreHelpers
-        .addLocation(db, locationObject)
-        .then(locationRef => {
-          db.collection("items")
-            .doc(formData.item_ref)
-            .update({
-              locations: admin.firestore.FieldValue.arrayUnion(
-                db.doc("locations/" + locationRef.id)
-              ),
-            })
-          res.status(200).send({
-            locationRef: locationRef.id,
-          })
+
+      try {
+        const locationRef = await firestoreHelpers.addLocation(
+          db,
+          locationObject
+        )
+        const res = await firestoreHelpers.addLocationToItem(
+          db,
+          formData.item_ref,
+          locationRef.id
+        )
+        return res.status(200).send({
+          locationRef: locationRef.id,
         })
-        .catch(e => {
-          console.log(e)
-          res.status(500).send({
-            error: "Could not save new location",
-          })
+      } catch (e) {
+        console.log(e)
+        return res.status(500).send({
+          error: "Could not save new location",
         })
+      }
     }
   })
 })

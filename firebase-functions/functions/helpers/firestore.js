@@ -1,12 +1,39 @@
 const slugify = require("slugify")
 
-exports.addItem = (db, object, locationRef) =>
+exports.addItem = async (db, object, locationRef) =>
   db.collection("items").add({
     ...object,
     locations: [db.doc("locations/" + locationRef)],
   })
 
-exports.addLocation = (db, object) => db.collection("locations").add(object)
+exports.addLocation = async (db, object) =>
+  db.collection("locations").add(object)
+
+exports.addLocationToItem = async (db, itemRef, locationRef) =>
+  db
+    .collection("items")
+    .doc(itemRef)
+    .update({
+      locations: admin.firestore.FieldValue.arrayUnion(
+        db.doc("locations/" + locationRef)
+      ),
+    })
+
+const docExists = async (db, collection, name) => {
+  const snapshot = await db
+    .collection(collection)
+    .where("name", "==", name)
+    .get()
+  return !snapshot.empty
+}
+exports.docExists = docExists
+
+exports.itemExists = async (db, name) => {
+  return await docExists(db, "items", name)
+}
+exports.locationExists = async (db, name) => {
+  return await docExists(db, "locations", name)
+}
 
 exports.createItemObject = formData => {
   return {
