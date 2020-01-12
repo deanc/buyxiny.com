@@ -114,7 +114,7 @@ exports.addItem = functions.https.onRequest(async (req, res) => {
       !formData.type ||
       !formData.item_name ||
       (!formData.location_name && !formData.location_ref) ||
-      (formData.location_name && (!formData.url || !formData.address)) ||
+      (formData.location_name && !formData.url && !formData.address) ||
       !formData.author_ref ||
       !formData.country_ref
     ) {
@@ -169,7 +169,7 @@ exports.addItem = functions.https.onRequest(async (req, res) => {
           locationRef: locationRef.id,
         })
       } catch (e) {
-        console.log(e)
+        console.log(e.message, e.fileName, e.lineNumber)
         return res.status(500).send({
           error: "Could not save new location + item",
         })
@@ -187,7 +187,7 @@ exports.addItem = functions.https.onRequest(async (req, res) => {
           itemRef: itemRef.id,
         })
       } catch (e) {
-        console.log(e)
+        console.log(e.message, e.fileName, e.lineNumber)
         return res.status(500).send({
           error: "Could not save item with existing location",
         })
@@ -243,14 +243,15 @@ exports.addLocationToItem = functions.https.onRequest(async (req, res) => {
     // simplest case is item ref + location ref
     if (formData.item_ref && formData.location_ref) {
       try {
-        const res = firestoreHelpers.addLocationToItem(
+        const result = firestoreHelpers.addLocationToItem(
           db,
+          admin,
           formData.item_ref,
           formData.location_ref
         )
         return res.status(200).send({})
       } catch (e) {
-        console.log(e)
+        console.log(e.message, e.fileName, e.lineNumber)
         return res.status(500).send({
           error: "Could not add existing location to existing item",
         })
@@ -268,8 +269,9 @@ exports.addLocationToItem = functions.https.onRequest(async (req, res) => {
           db,
           locationObject
         )
-        const res = await firestoreHelpers.addLocationToItem(
+        const result = await firestoreHelpers.addLocationToItem(
           db,
+          admin,
           formData.item_ref,
           locationRef.id
         )
@@ -277,7 +279,7 @@ exports.addLocationToItem = functions.https.onRequest(async (req, res) => {
           locationRef: locationRef.id,
         })
       } catch (e) {
-        console.log(e)
+        console.log(e.message, e.fileName, e.lineNumber)
         return res.status(500).send({
           error: "Could not save new location",
         })

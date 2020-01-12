@@ -9,7 +9,7 @@ exports.addItem = async (db, object, locationRef) =>
 exports.addLocation = async (db, object) =>
   db.collection("locations").add(object)
 
-exports.addLocationToItem = async (db, itemRef, locationRef) =>
+exports.addLocationToItem = async (db, admin, itemRef, locationRef) =>
   db
     .collection("items")
     .doc(itemRef)
