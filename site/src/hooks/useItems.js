@@ -12,7 +12,6 @@ const useItems = type => {
     snapshot.forEach(doc => {
       items.push({ ...doc.data(), id: doc.id })
     })
-    console.log(items.map(item => item.name))
     setItems(items)
   }
 
