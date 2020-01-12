@@ -28,6 +28,7 @@ const ContactPage = () => (
         netlify-honeypot="company"
         data-netlify-recaptcha="true"
       >
+        <input type="hidden" name="form-name" value="contact" />
         <fieldset>
           <h2>Contact Us</h2>
           <div className="form-row nfhp">
