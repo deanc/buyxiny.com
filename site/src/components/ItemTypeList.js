@@ -27,11 +27,17 @@ const ItemTypeList = ({ country, currentType }) => {
   })
   const finalTypes = [
     {
-      label: "Everything",
+      label: "All",
       linkTo: `/q/${country}`,
       active: currentType == null,
     },
     ...remappedTypes,
+    {
+      label: "+ Add<span class='hide-mobile'> item/service</span>",
+      linkTo: `/q/${country}/add`,
+      push: "right",
+      active: true,
+    },
   ]
 
   return <TabList tabs={finalTypes} />

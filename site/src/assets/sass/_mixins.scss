@@ -11,9 +11,27 @@ $browser-context: 18; // Default
 }
 
 @function strip-unit($number) {
-  @if type-of($number) == "number" and not unitless($number) {
+  @if type-of($number)=="number"and not unitless($number) {
     @return $number / ($number * 0 + 1);
   }
 
   @return $number;
+}
+
+@mixin placeholder {
+  &::-webkit-input-placeholder {
+    @content
+  }
+
+  &:-moz-placeholder {
+    @content
+  }
+
+  &::-moz-placeholder {
+    @content
+  }
+
+  &:-ms-input-placeholder {
+    @content
+  }
 }

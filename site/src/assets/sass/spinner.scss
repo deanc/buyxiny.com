@@ -2,11 +2,11 @@
   /* Spinner size and color */
   width: 1.5rem;
   height: 1.5rem;
-  border-top-color: #444;
-  border-left-color: #444;
+  border-top-color: $brown;
+  border-left-color: $brown;
 
   /* Additional spinner styles */
-  animation: spinner 400ms linear infinite;
+  animation: spinner 700ms linear infinite;
   border-bottom-color: transparent;
   border-right-color: transparent;
   border-style: solid;
@@ -26,6 +26,7 @@
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
   }

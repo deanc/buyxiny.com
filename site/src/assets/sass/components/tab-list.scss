@@ -7,6 +7,7 @@ $tabBorderColor: rgba(0, 0, 0, 0.1);
   display: flex;
   justify-content: flex-start;
   border-bottom: 1px solid $tabBorderColor;
+
   a {
     display: block;
     color: $brown;
@@ -19,12 +20,18 @@ $tabBorderColor: rgba(0, 0, 0, 0.1);
     text-decoration: none;
   }
 
-  li.active {
-    a {
-      border-left-color: $tabBorderColor;
-      border-right-color: $tabBorderColor;
-      border-top-color: $tabBorderColor;
-      color: #000;
+  li {
+    &.active {
+      a {
+        border-left-color: $tabBorderColor;
+        border-right-color: $tabBorderColor;
+        border-top-color: $tabBorderColor;
+        color: #000;
+      }
+    }
+
+    &.push-right {
+      margin-left: auto;
     }
   }
 }

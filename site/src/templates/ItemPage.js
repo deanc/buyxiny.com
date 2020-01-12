@@ -8,15 +8,14 @@ import { capitalize } from "lodash"
 import ShareImage from "../assets/img/fbshare.png"
 
 const ItemPage = ({ pageContext: { id, slug, country, name } }) => {
-
-  const capitalizedCountry = capitalize(country);
+  const capitalizedCountry = capitalize(country)
 
   return (
     <>
-                <SEO 
-      title={`Where to buy ${name} in ${capitalizedCountry}`} 
-      description={`Can't find ${name} in ${capitalizedCountry}? Visit our site to find out where to easily buy it!`} 
-      image={ShareImage}
+      <SEO
+        title={`Where to buy ${name} in ${capitalizedCountry}`}
+        description={`Can't find ${name} in ${capitalizedCountry}? Visit our site to find out where to easily buy it!`}
+        image={ShareImage}
       />
       <div className="container">
         <Breadcrumb

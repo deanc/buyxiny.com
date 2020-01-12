@@ -35,6 +35,7 @@
 @import "components/breadcrumb";
 @import "components/country-list";
 @import "components/footer";
+@import "components/forms";
 @import "components/item-list";
 @import "components/hero";
 @import "components/item-location";
@@ -91,6 +92,12 @@ h2 {
 
 a {
   color: $red;
+}
+
+.hide-mobile {
+  @media (max-width: $bp-mobile) {
+    display: none;
+  }
 }
 
 .container {

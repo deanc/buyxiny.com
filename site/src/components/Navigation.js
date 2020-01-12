@@ -3,11 +3,11 @@ import NavigationProfile from "./NavigationProfile"
 import Logo from "./Logo"
 import NavigationSearch from "./NavigationSearch"
 
-const Navigation = ({ country }) => {
+const Navigation = props => {
   return (
     <nav>
       <Logo />
-      <NavigationSearch country={country} />
+      <NavigationSearch {...props} />
       <ul>
         <li>
           <NavigationProfile />

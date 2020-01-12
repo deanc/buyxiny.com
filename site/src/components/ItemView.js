@@ -10,25 +10,25 @@ const ItemView = ({ id, name, slug, country }) => {
   const { item, loading } = useItem(id)
 
   let loadingContent
+  let locations = []
+  let identifier = null
   if (loading) {
     loadingContent = <FacebookLoader width={500} />
+  } else {
+    if (item.locations) {
+      item.locations.forEach((location, i) => {
+        locations.push(
+          <ItemLocation
+            key={i}
+            name={location.name}
+            url={location.url}
+            address={location.address}
+          />
+        )
+      })
+    }
+    identifier = `item-${item.id}-country-${country}`
   }
-
-  let locations = []
-  if (item.locations) {
-    item.locations.forEach((location, i) => {
-      locations.push(
-        <ItemLocation
-          key={i}
-          name={location.name}
-          url={location.url}
-          address={location.address}
-        />
-      )
-    })
-  }
-
-  const identifier = `item-${item.id}-country-${country}`
 
   return (
     <div className="item-view">

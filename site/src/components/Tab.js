@@ -1,15 +1,21 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { Link } from "gatsby"
+import classNames from "classnames"
 
-const Tab = ({ active, label, linkTo }) => {
+const Tab = ({ active, label, linkTo, push }) => {
   if (!linkTo || !linkTo.length) {
     return <li>{label}</li>
   }
 
+  const tabClasses = classNames({
+    active,
+    [`push-${push}`]: push && push.length,
+  })
+
   return (
-    <li className={active ? "active" : ""}>
-      <Link to={linkTo}>{label}</Link>
+    <li className={tabClasses}>
+      <Link to={linkTo} dangerouslySetInnerHTML={{ __html: label }} />
     </li>
   )
 }

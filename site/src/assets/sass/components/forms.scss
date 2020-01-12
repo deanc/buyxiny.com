@@ -1,0 +1,158 @@
+form {
+  fieldset {
+    background: $brownAlt;
+    border: 0;
+    border-radius: 3px;
+    padding: 2em;
+    margin-bottom: 1em;
+  }
+
+  h2 {
+    margin-top: 0;
+    margin-bottom: 0;
+    color: #020826;
+  }
+
+  .info {
+    opacity: 0.7;
+    font-size: 0.85em;
+
+    ul {
+      margin-top: 0;
+      padding-left: 2em;
+    }
+
+    p {
+      margin-bottom: 0.25em;
+    }
+  }
+
+  .form-row {
+    position: relative;
+    display: block;
+    margin-bottom: 1em;
+
+    .error {
+      color: $red;
+    }
+
+    label,
+    .label {
+      display: block;
+      color: #000;
+    }
+
+    &.inline {
+      .label {
+        display: block;
+        color: #000;
+      }
+
+      label {
+        display: inline-block;
+        margin-right: 1em;
+
+        &:last-child {
+          margin-right: 0;
+        }
+      }
+    }
+
+    input[type="radio"] {
+      margin-right: 10px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      position: relative;
+      font-family: inherit;
+      font-size: inherit;
+      padding: 10px 40px 10px 10px;
+      border-radius: 3px;
+      border: 1px solid $brownAlt;
+      box-shadow: none;
+      width: 100%;
+      background: $lightBrown;
+
+      @include placeholder {
+        color: lighten($brown, 30%);
+      }
+
+      &:focus {
+        border-color: darken($brownAlt, 10%);
+        outline: 0;
+      }
+    }
+
+    .input-holder {
+      position: relative;
+    }
+
+    input[data-autocompleted="true"],
+    input.autocompleted {
+      background: #f5ffeb;
+      border-color: $green;
+    }
+
+    .autocomplete-label {
+      color: $green;
+    }
+
+    input[data-autocompleted="true"]+.after:after,
+    input.autocompleted+.after:after {
+      content: "\2714";
+      position: absolute;
+      right: 15px;
+      top: 8px;
+      color: $green;
+    }
+  }
+
+  input[type="button"],
+  input[type="submit"],
+  button {
+    @extend .btn;
+  }
+
+  .react-autosuggest__container {
+    position: relative;
+  }
+
+  .react-autosuggest__container--open {
+
+    input[type="text"],
+    input[type="search"] {
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+  }
+
+  .react-autosuggest__suggestions-container--open {
+    position: absolute;
+    z-index: 2;
+    left: 0;
+    right: 0;
+    top: 100%;
+    background: $lightBrown;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+    border-left: 1px solid darken($brownAlt, 10%);
+    border-right: 1px solid darken($brownAlt, 10%);
+    border-bottom: 1px solid darken($brownAlt, 10%);
+
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    li {
+      padding: 5px 1em;
+    }
+  }
+
+  .react-autosuggest__suggestion--highlighted {
+    background: darken($lightBrown, 10%);
+  }
+}

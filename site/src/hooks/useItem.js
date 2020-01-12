@@ -4,17 +4,22 @@ import firebase from "../store/firebase"
 const useItem = id => {
   const [error, setError] = React.useState(false)
   const [loading, setLoading] = React.useState(true)
-  const [item, setItem] = React.useState([])
+  const [item, setItem] = React.useState(null)
 
   const firestore = firebase.firestore()
 
   useEffect(() => {
+    if (!id) {
+      setItem(null)
+      setLoading(false)
+      return
+    }
+
     const unsubscribeItem = firestore
       .collection("items")
       .doc(id)
       .onSnapshot(
         snapshot => {
-          setLoading(false)
           if (!snapshot.exists) {
             setItem(null)
           } else {
@@ -42,12 +47,14 @@ const useItem = id => {
                   id: snapshot.id,
                   locations: res,
                 })
+                setLoading(false)
               })
             } else {
               setItem({
                 ...snapshot.data(),
                 id: snapshot.id,
               })
+              setLoading(false)
             }
           }
         },

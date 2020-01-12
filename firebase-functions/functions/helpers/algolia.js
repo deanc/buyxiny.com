@@ -22,7 +22,7 @@ const saveDocumentInAlgolia = async (index, snapshot) => {
       }
     }
   }
-  return
+  return null
 }
 
 const updateDocumentInAlgolia = async (index, change) => {
@@ -53,7 +53,7 @@ const updateDocumentInAlgolia = async (index, change) => {
       return res
     }
   }
-  return
+  return null
 }
 
 const deleteDocumentFromAlgolia = async (index, snapshot) => {
@@ -63,7 +63,7 @@ const deleteDocumentFromAlgolia = async (index, snapshot) => {
     const res = await collectionIndex.deleteObject(objectID)
     return res
   }
-  return
+  return null
 }
 
 const flattenItem = (id, snapshot) => {
