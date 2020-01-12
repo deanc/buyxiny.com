@@ -20,7 +20,6 @@ const useItem = id => {
       .doc(id)
       .onSnapshot(
         snapshot => {
-          setLoading(false)
           if (!snapshot.exists) {
             setItem(null)
           } else {
@@ -48,12 +47,14 @@ const useItem = id => {
                   id: snapshot.id,
                   locations: res,
                 })
+                setLoading(false)
               })
             } else {
               setItem({
                 ...snapshot.data(),
                 id: snapshot.id,
               })
+              setLoading(false)
             }
           }
         },

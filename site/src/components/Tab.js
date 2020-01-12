@@ -15,7 +15,7 @@ const Tab = ({ active, label, linkTo, push }) => {
 
   return (
     <li className={tabClasses}>
-      <Link to={linkTo}>{label}</Link>
+      <Link to={linkTo} dangerouslySetInnerHTML={{ __html: label }} />
     </li>
   )
 }

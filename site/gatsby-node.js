@@ -70,6 +70,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
           context: {
             // path,
             country: node.slug,
+            countryRef: node.id,
             showSearch: false,
           },
         })

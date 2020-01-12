@@ -5,17 +5,40 @@ import Breadcrumb from "../components/Breadcrumb"
 import AddItemForm from "../components/forms/AddItemForm"
 import { capitalize } from "lodash"
 import querystring from "querystring"
+import { useAuth } from "../hooks/useAuth"
 
 import ShareImage from "../assets/img/fbshare.png"
 
-const AddItemPage = ({ pageContext: { id, slug, country, name } }) => {
+const AddItemPage = ({
+  pageContext: { id, slug, country, countryRef, name },
+}) => {
+  const auth = useAuth()
+
   const capitalizedCountry = capitalize(country)
 
-  let form = <AddItemForm />
-  if (window.location.search.length) {
-    const queryBits = querystring.parse(window.location.search.slice(1))
-    if (queryBits.item) {
-      form = <AddItemForm itemRef={queryBits.item} />
+  let form = (
+    <p>Please sign in or create an account to add new products/services</p>
+  )
+  if (auth.initialized && auth.user) {
+    form = (
+      <AddItemForm
+        authorRef={auth.user.uid}
+        countrySlug={country}
+        countryRef={countryRef}
+      />
+    )
+    if (window.location.search.length) {
+      const queryBits = querystring.parse(window.location.search.slice(1))
+      if (queryBits.item) {
+        form = (
+          <AddItemForm
+            itemRef={queryBits.item}
+            authorRef={auth.user.uid}
+            countrySlug={country}
+            countryRef={countryRef}
+          />
+        )
+      }
     }
   }
 

@@ -94,6 +94,12 @@ a {
   color: $red;
 }
 
+.hide-mobile {
+  @media (max-width: $bp-mobile) {
+    display: none;
+  }
+}
+
 .container {
   width: 90%;
   max-width: 1040px;

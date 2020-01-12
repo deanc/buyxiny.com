@@ -1,4 +1,6 @@
 import React, { useState } from "react"
+import { Link } from "gatsby"
+import axios from "axios"
 import useItem from "../../hooks/useItem"
 
 import { Formik, Form } from "formik"
@@ -53,12 +55,28 @@ const LocationFieldInfo = () => {
   )
 }
 
-const AddItemForm = ({ itemRef }) => {
+const AddItemForm = ({ countrySlug, countryRef, authorRef, itemRef }) => {
   const [locationAutocompleted, setLocationAutocompleted] = useState(false)
-
+  const [success, setSuccess] = useState(false)
+  const [globalError, setGlobalError] = useState(null)
   const { item } = useItem(itemRef)
 
   const schema = !itemRef ? AddItemSchema : AddLocationSchema
+
+  if (success) {
+    return (
+      <>
+        <p>
+          Thank you. Your submission will appear on the site within 15-30mins.
+        </p>
+        <p>
+          <Link className="btn btn-small" to={`/q/${countrySlug}`}>
+            Go back to browsing
+          </Link>
+        </p>
+      </>
+    )
+  }
 
   return (
     <Formik
@@ -66,16 +84,41 @@ const AddItemForm = ({ itemRef }) => {
         type: "product",
         item_name: "",
         item_ref: itemRef,
-        place_name: "",
-        place_ref: null,
+        location_name: "",
+        location_ref: null,
         address: "",
         url: "",
+        author_ref: authorRef,
+        country_ref: countryRef,
       }}
       validationSchema={schema}
       onSubmit={(values, { setSubmitting }) => {
-        console.log(values)
         setTimeout(() => {
-          // alert(JSON.stringify(values, null, 2))
+          const APIURL = process.env.GATSBY_FIREBASE_FUNCTIONS_API_BASE
+
+          let route = "addLocationToItem"
+          if (!values.item_ref || !values.item_ref.length) {
+            route = "addItem"
+          }
+
+          // const formData = new FormData()
+          // Object.keys(values).forEach(key => formData.append(key, values[key]))
+
+          setGlobalError(null)
+          axios
+            .post(APIURL + "/" + route, values)
+            .then(function(response) {
+              if (response.status === 200) {
+                setSuccess(true)
+              } else {
+                setGlobalError(response.error)
+              }
+            })
+            .catch(function(response) {
+              //handle error
+              setGlobalError("Something went horribly wrong!")
+            })
+
           setSubmitting(false)
         }, 400)
       }}
@@ -124,17 +167,17 @@ const AddItemForm = ({ itemRef }) => {
             <FormRow>
               <FormLabel label="Place name (required)" />
               <AutocompleteField
-                name="place_name"
-                refFieldName="place_ref"
+                name="location_name"
+                refFieldName="location_ref"
                 setFieldValue={setFieldValue}
                 onSuggestionSelected={suggestion => {
-                  setFieldValue("place_name", suggestion.name)
+                  setFieldValue("location_name", suggestion.name)
                   setFieldValue("url", suggestion.url ? suggestion.url : "")
                   setFieldValue(
                     "address",
                     suggestion.address ? suggestion.address : ""
                   )
-                  setFieldValue("place_ref", suggestion.objectID)
+                  setFieldValue("location_ref", suggestion.objectID)
                   setLocationAutocompleted(true)
                 }}
                 onChange={() => {
@@ -167,6 +210,7 @@ const AddItemForm = ({ itemRef }) => {
           </Fieldset>
 
           <Submit label="Submit" disabled={isSubmitting} />
+          {globalError && <p>{globalError}</p>}
         </Form>
       )}
     </Formik>
