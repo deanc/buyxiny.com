@@ -32,15 +32,21 @@
 
   .ais-Hits-item {
     margin: 0;
-    background: $lightBrown;
     width: 100%;
     border: 0;
     box-shadow: none;
-    padding: 5px 10px;
+    padding: 0;
 
     a {
+      display: block;
+      padding: 5px 10px;
+      background: $lightBrown;
       text-decoration: none;
       color: $brown;
+
+      &:hover {
+        background: $almostWhite;
+      }
     }
   }
 
@@ -49,6 +55,8 @@
   }
 
   .ais-Highlight-highlighted {
-    //background: #fff;
+    background: transparent;
+    font-weight: bold;
+    font-style: normal;
   }
 }
