@@ -9,7 +9,7 @@ form {
 
   h2 {
     margin-top: 0;
-    margin-bottom: 0;
+    margin-bottom: .5em;
     color: #020826;
   }
 
@@ -31,6 +31,10 @@ form {
     position: relative;
     display: block;
     margin-bottom: 1em;
+
+    &.nfhp {
+      display: none;
+    }
 
     .error {
       color: $red;
@@ -64,7 +68,8 @@ form {
 
     input[type="text"],
     input[type="email"],
-    input[type="password"] {
+    input[type="password"],
+    textarea {
       position: relative;
       font-family: inherit;
       font-size: inherit;
@@ -83,6 +88,10 @@ form {
         border-color: darken($brownAlt, 10%);
         outline: 0;
       }
+    }
+
+    textarea {
+      min-height: 300px;
     }
 
     .input-holder {
