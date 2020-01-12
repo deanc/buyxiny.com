@@ -249,7 +249,10 @@ exports.addLocationToItem = functions.https.onRequest(async (req, res) => {
           formData.item_ref,
           formData.location_ref
         )
-        return res.status(200).send({})
+        return res.status(200).send({
+          itemRef: formData.item_ref,
+          locationRef: formData.location_ref,
+        })
       } catch (e) {
         console.log(e.message, e.fileName, e.lineNumber)
         return res.status(500).send({

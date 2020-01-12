@@ -12,6 +12,7 @@ const useItems = type => {
     snapshot.forEach(doc => {
       items.push({ ...doc.data(), id: doc.id })
     })
+    console.log(items.map(item => item.name))
     setItems(items)
   }
 
@@ -27,14 +28,14 @@ const useItems = type => {
         .firestore()
         .collection("items")
         .where("type", "==", type)
-        .where("active", "==", 1)
+        .where("active", "==", true)
         .orderBy("name")
         .onSnapshot(handleSnapshot, handleError)
     } else {
       unsubscribe = firebase
         .firestore()
         .collection("items")
-        .where("active", "==", 1)
+        .where("active", "==", true)
         .orderBy("name")
         .onSnapshot(handleSnapshot, handleError)
     }
