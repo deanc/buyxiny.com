@@ -50,7 +50,7 @@ module.exports = {
                 ? doc.locations.map(location => location.id)
                 : [],
             }),
-            conditions: [["active", "==", 1]],
+            conditions: [["active", "==", true]],
           },
           {
             type: `Country`,
