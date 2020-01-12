@@ -34,7 +34,7 @@ const useItem = id => {
                     .get()
                     .then(locationSnapshot => {
                       if (locationSnapshot.exists) {
-                        return locationSnapshot.data()
+                        return { ...locationSnapshot.data(), ref: loc.id }
                       }
                       return []
                     })

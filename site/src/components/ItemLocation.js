@@ -1,7 +1,10 @@
 import React from "react"
 import PropTypes from "prop-types"
+import { useAuth } from "../hooks/useAuth"
 
-const ItemLocation = ({ name, address, url }) => {
+const ItemLocation = ({ name, locationRef, address, url, closed }) => {
+  const auth = useAuth()
+
   let urlRender
   if (url && url.length) {
     urlRender = (
@@ -15,12 +18,28 @@ const ItemLocation = ({ name, address, url }) => {
     )
   }
 
+  let ref = null
+  if (auth && auth.user) {
+    ref = <span>{locationRef}</span>
+  }
+
+  let closedRender = null
+  if (closed) {
+    closedRender = (
+      <p>
+        <span className="btn danger">Permanently closed </span>
+      </p>
+    )
+  }
+
   return (
     <div className="item-location">
       <h3>
-        {name} {url ? urlRender : ""}
+        {name} {ref} {url ? urlRender : ""}
       </h3>
+
       <p>{address}</p>
+      {closedRender}
     </div>
   )
 }

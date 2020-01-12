@@ -134,16 +134,20 @@ nav {
   font-weight: 700;
   cursor: pointer;
   text-decoration: none;
-}
 
-.btn:hover {
-  box-shadow: 0 5px 15px -10px rgba(31, 18, 53, 0.6);
-}
+  &.big {
+    padding: 1.2rem 2rem;
+    border-radius: 3px;
+    font-size: 1.1rem;
+  }
 
-.btn.big {
-  padding: 1.2rem 2rem;
-  border-radius: 3px;
-  font-size: 1.1rem;
+  &.danger {
+    background: $red;
+  }
+
+  &:hover {
+    box-shadow: 0 5px 15px -10px rgba(31, 18, 53, 0.6);
+  }
 }
 
 nav svg {

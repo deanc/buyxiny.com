@@ -16,13 +16,15 @@ const ItemView = ({ id, name, slug, country }) => {
     loadingContent = <FacebookLoader width={500} />
   } else {
     if (item.locations) {
-      item.locations.forEach((location, i) => {
+      item.locations.forEach(location => {
         locations.push(
           <ItemLocation
-            key={i}
+            key={location.id}
+            locationRef={location.ref}
             name={location.name}
             url={location.url}
             address={location.address}
+            closed={location.closed && location.closed === true}
           />
         )
       })
