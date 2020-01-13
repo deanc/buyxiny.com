@@ -19,7 +19,12 @@ const ItemLocation = ({ name, locationRef, address, url, closed }) => {
   }
 
   let ref = null
-  if (auth && auth.user) {
+  const isAdmin =
+    auth.user &&
+    auth.userClaims &&
+    auth.userClaims.roles &&
+    auth.userClaims.roles.includes("admin")
+  if (isAdmin) {
     ref = <span>{locationRef}</span>
   }
 
