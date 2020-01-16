@@ -3,20 +3,16 @@
 
 @font-face {
   font-family: Proxima Nova;
-  src: url(../font/proxima-nova/proxima-nova-regular.woff2) format("woff2")
-    /*,
-         url(opensans.woff) format('woff')*/
-  ;
+  src: local('sans-serif'), url(../font/proxima-nova/proxima-nova-regular.woff2) format("woff2");
   font-weight: 400;
+  font-display: swap;
 }
 
 @font-face {
   font-family: Proxima Nova;
-  src: url(../font/proxima-nova/proxima-nova-bold.woff2) format("woff2")
-    /*,
-         url(opensans.woff) format('woff')*/
-  ;
+  src: local('sans-serif'), url(../font/proxima-nova/proxima-nova-bold.woff2) format("woff2");
   font-weight: 700;
+  font-display: swap;
 }
 
 * {
