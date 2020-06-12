@@ -61,6 +61,7 @@
     "url": "https://github.com/gatsbyjs/gatsby/issues"
   },
   "resolutions": {
-    "react-helmet/react-side-effect": "2.1.0"
+    "react-helmet/react-side-effect": "2.1.0",
+    "sharp": "0.24.0"
   }
 }
